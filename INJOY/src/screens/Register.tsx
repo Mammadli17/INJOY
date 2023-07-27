@@ -114,8 +114,7 @@ const Register = ({ navigation }: any) => {
   
       dispatch(postData({ email, password, fullName }))
         .then(res => {
-           // Gezinme işlemini burada gerçekleştiriyoruz
-           navigation.navigate('Otp', { email });
+           navigation.navigate('Otp',{ email });
         })
         .catch(error => {
           console.log(error);

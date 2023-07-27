@@ -5,6 +5,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/loginSliceC';
+import CheckToken from './CheckToken';
+import App from '../../App';
 const Otp = ({navigation,route}: any) => {
   const [otpValues, setOtpValues] = React.useState(['', '', '', '']);
   
@@ -33,9 +35,12 @@ const Otp = ({navigation,route}: any) => {
     }
   };
 
+    
   const [timer, setTimer] = useState(120);
   let dispatch = useDispatch();
   const onSubmit = () => {
+    console.log(email);
+    
     const code = otpValues.join('')
     console.log(code);
     
@@ -43,12 +48,13 @@ const Otp = ({navigation,route}: any) => {
         .then(res => {
             console.log("salam",res.data?.token);
             console.log("salam");
-            
+           
             
             AsyncStorage.setItem("token", res.data?.token)
             .then(res => {
                 dispatch(login())
                 console.log("ok");
+                navigation.navigate('CheckToken')
                 
             })
         })
@@ -56,8 +62,6 @@ const Otp = ({navigation,route}: any) => {
             
             if(err.response){
                Alert.alert(err.response.data.message)
-            
-               
             }
             else{
                 Alert.alert("Error!")

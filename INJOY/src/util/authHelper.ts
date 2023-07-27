@@ -5,6 +5,7 @@ import axios from "axios";
 export async function tokenCheck() : Promise<Boolean> {
 
     let token: any = await AsyncStorage.getItem("token");
+   console.log(token,"t");
    
 
     let userStatus = false;

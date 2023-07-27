@@ -9,6 +9,7 @@ const CheckToken = ({ navigation }: any) => {
   const isLoggedIn = useSelector((state: { login: { value: boolean } }) => state.login.value);
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
+console.log("salamToken");
 
   useEffect(() => {
     // Function to check the token and update the loading state and Redux state accordingly
@@ -41,7 +42,7 @@ const CheckToken = ({ navigation }: any) => {
         console.log("Navigating to 'Register' screen.");
       }
     }
-  }, [loading]);
+  }, [loading,isLoggedIn, navigation]);
 
   // Yükleme durumunu kontrol et ve gerekli bileşeni döndür
   const renderContent = () => {
@@ -54,8 +55,8 @@ const CheckToken = ({ navigation }: any) => {
     }
     // Return null if not loading (component will navigate based on the state)
     return <View style={{ flex: 1, backgroundColor: '#131621' }}>
-    {/* Your other content or components go here */}
-  </View>
+      {/* Your other content or components go here */}
+    </View>
   };
 
   return renderContent();
