@@ -23,23 +23,19 @@ import Iphone from '../assets/Svgs/Iphone';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux';
 import { postData } from '../redux/slices/LoginSlice';
+import { postSign } from '../redux/slices/SignInSlice';
 
-const Register = ({ navigation }: any) => {
-  const [fullName, setFullName] = useState('');
+const SignIn = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullNameFocused, setFullNameFocused] = useState(false);
+
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
-  const fullNameRef = useRef<TextInput | null>(null);
+
   const emailRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-
-  const handleFullNameChange = (text: string) => {
-    setFullName(text);
-  };
 
   const handleEmailChange = (text: string) => {
     setEmail(text);
@@ -48,21 +44,9 @@ const Register = ({ navigation }: any) => {
   const handlePasswordChange = (text: string) => {
     setPassword(text);
   };
-
-  const handleFullNameFocus = () => {
-    setFullNameFocused(true);
-    setEmailFocused(false);
-    setPasswordFocused(false);
-    // scrollToInput(fullNameRef);
-  };
-
-  const handleFullNameBlur = () => {
-    setFullNameFocused(false);
-  };
-
   const handleEmailFocus = () => {
     setEmailFocused(true);
-    setFullNameFocused(false);
+
     setPasswordFocused(false);
     scrollToInput(emailRef);
   };
@@ -73,7 +57,7 @@ const Register = ({ navigation }: any) => {
 
   const handlePasswordFocus = () => {
     setPasswordFocused(true);
-    setFullNameFocused(false);
+
     setEmailFocused(false);
     scrollToInput(passwordRef);
   };
@@ -86,7 +70,7 @@ const Register = ({ navigation }: any) => {
     setPasswordVisible((prevVisible) => !prevVisible);
   };
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const scrollToInput = (ref: any) => {
     if (ref.current && scrollViewRef.current) {
       ref.current.measureLayout(
@@ -96,27 +80,35 @@ const Register = ({ navigation }: any) => {
           const yOffset = y - 300; // 100 değeri değiştirilebilir, deneyerek uygun değeri bulabilirsiniz
           scrollViewRef.current?.scrollTo({ y: yOffset, animated: true });
         },
-        () => {},
+        () => { },
       );
     }
   };
-  const handleLogin = () => {
+  const handleSignIn = () => {
  
     // Email format validation using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
-    if (email && password && fullName) {
+    if (email && password) {
       if (!emailRegex.test(email)) {
         // Email format is invalid, display alert
         Alert.alert('Please enter a valid email address')
         return;
       }
   
-      dispatch(postData({ email, password, fullName }))
-        .then(res => {
-           // Gezinme işlemini burada gerçekleştiriyoruz
-           navigation.navigate('Otp', { email });
+      dispatch(postSign({ email, password}))
+        .then((action: any ) => {
+          const response = action.payload;
+          if (response && response.email === email) {
+            // If the response contains the same email as sent, navigate to 'Otp' screen
+            navigation.navigate('Otp', { email });
+          } else {
+            // If the response email doesn't match, show an alert
+            Alert.alert('Invalid email or password');
+          }
+        
         })
+        
         .catch(error => {
           console.log(error);
         });
@@ -132,33 +124,20 @@ const Register = ({ navigation }: any) => {
     //   enabled={false}
     >
       <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      ref={scrollViewRef}
-      keyboardShouldPersistTaps="handled"
-      scrollEventThrottle={16}
-    
+        contentContainerStyle={styles.scrollContainer}
+        ref={scrollViewRef}
+        keyboardShouldPersistTaps="handled"
+        scrollEventThrottle={16}
+
       >
         <View style={{ marginTop: '5%' }}>
           <Back />
         </View>
         <View style={styles.header}>
-          <Text style={styles.headertext}>Create your Account</Text>
+          <Text style={styles.headertext}>Login Your Account</Text>
         </View>
         <View style={styles.formContainer}>
-          <View style={[styles.inputContainer, fullNameFocused && styles.focusedBorder]}>
-            <View style={styles.profileIcon}>
-              <Profile />
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Full Name"
-              placeholderTextColor="#A9A9A9"
-              onChangeText={handleFullNameChange}
-              onFocus={handleFullNameFocus}
-              onBlur={handleFullNameBlur}
-              ref={fullNameRef}
-            />
-          </View>
+
           <View style={[styles.inputContainer, emailFocused && styles.focusedBorder]}>
             <View style={styles.profileIcon}>
               <Email />
@@ -193,22 +172,30 @@ const Register = ({ navigation }: any) => {
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <View style={{ marginTop: 10,left:"25%" }}>
+            <TouchableOpacity >
+            <Text style={{ marginHorizontal: 80, fontSize: 14,textAlign:"center",color:"#0677E8" }}>
+            Forget Password ?
+            </Text>
+            </TouchableOpacity>
+
+          </View>
+           <TouchableOpacity style={styles.button} onPress={handleSignIn} >
             <Text style={{ textAlign: "center", top: "30%", fontSize: 20 }}>
-              Register
+              Login
             </Text>
           </TouchableOpacity>
-
           <View style={{ marginTop: 20, flexDirection: "row", gap: -70 }}>
             <Text style={{ marginHorizontal: 80, fontSize: 14 }}>
-              Already Have An Account?
+              Create new  Account?
             </Text>
-            <TouchableOpacity onPress={()=>navigation.navigate('SignIn')} >
+            <TouchableOpacity onPress={()=>navigation.navigate('Register')} >
               <Text style={{ color: "#0677E8" }}>
-                Sign In
+                Sign Up
               </Text>
             </TouchableOpacity>
           </View>
+          
           <View style={styles.line}>
 
           </View>
@@ -287,4 +274,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register;
+export default SignIn;

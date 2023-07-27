@@ -6,6 +6,8 @@ import Register from './Register';
 import CheckOnbording from './CheckOnbording';
 import Otp from './Otp';
 import TabScreen from './TabScreen';
+import CheckToken from './CheckToken';
+import SignIn from './SignIn';
 
 const Stack = createStackNavigator();
 
@@ -17,8 +19,8 @@ const StackNav = () => {
       <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
       <Stack.Screen name="Tab" component={TabScreen} options={{ headerShown: false }} />
-      
-
+      <Stack.Screen name="CheckToken" component={CheckToken} options={{ headerShown: false }} />
+      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

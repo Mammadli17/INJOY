@@ -1,10 +1,15 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity,Alert } from 'react-native';
 import React, { useRef, useState, useEffect } from 'react';
 import Back from '../assets/Svgs/Back';
-
-const Otp = ({navigation}: any) => {
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slices/loginSliceC';
+const Otp = ({navigation,route}: any) => {
   const [otpValues, setOtpValues] = React.useState(['', '', '', '']);
-
+  
+  
+  const { email } = route.params;
   const otpInputs : any | null= [
     useRef<TextInput>(null),
     useRef<TextInput>(null),
@@ -29,8 +34,37 @@ const Otp = ({navigation}: any) => {
   };
 
   const [timer, setTimer] = useState(120);
+  let dispatch = useDispatch();
+  const onSubmit = () => {
+    const code = otpValues.join('')
+    console.log(code);
+    
+    axios.post("http://192.168.100.27:8080/api/user/confirm", { email:email, code:code })
+        .then(res => {
+            console.log("salam",res.data?.token);
+            console.log("salam");
+            
+            
+            AsyncStorage.setItem("token", res.data?.token)
+            .then(res => {
+                dispatch(login())
+                console.log("ok");
+                
+            })
+        })
+        .catch(err => {
+            
+            if(err.response){
+               Alert.alert(err.response.data.message)
+            
+               
+            }
+            else{
+                Alert.alert("Error!")
+            }
 
-
+        })
+}
 
   useEffect(() => {
     const timerInterval = setInterval(() => {
@@ -58,7 +92,7 @@ const Otp = ({navigation}: any) => {
           We Have Sent Code To Your Email
         </Text>
         <Text style={{ textAlign: "center", marginTop: "10%" }}>
-          Your Email
+          {email}
         </Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: '5%' }}>
@@ -97,7 +131,7 @@ const Otp = ({navigation}: any) => {
 
         <TouchableOpacity
           style={{backgroundColor:"#0677E8",marginHorizontal:30,marginTop:50,height:60,borderRadius:10}}
-          onPress={()=>navigation.navigate("Tab")}
+          onPress={onSubmit}
         >
           <Text style={{textAlign:"center",marginTop:"6%",fontSize:20}}>Verify</Text>
         </TouchableOpacity>

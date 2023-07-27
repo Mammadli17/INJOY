@@ -18,7 +18,7 @@ const userController = {
                         password: req.body.password,
                         code: randomCode,
                         seria:req.body.seria,
-                        finCode:req.body.finCode,
+                        FullName:req.body.FullName,
                     
 
                     });
@@ -72,6 +72,27 @@ const userController = {
                 console.log('Err', err);
                 res.status(500).send("Mongo error!")
             })
+    }, login: (req, res) => {
+        User.findOne({ email: req.body.email?.toLowerCase(), password: req.body.password })
+            .then(data => {
+                console.log("data",data); 
+                if (data) {
+                    console.log("s");
+                    var randomCode = Math.floor(Math.random() * 10000);
+                    data.code = randomCode;
+                   
+
+                    confirmCodeEmail(req.body.email, randomCode);
+                    data.codeExpire = moment().add(120, 'seconds');
+                    data.save();
+                    res.json({ email: req.body.email })
+
+                }
+                else {
+                    res.status(404).json({ "msg": "Email or password error" })
+                }
+            })
+
     },
   
 }
