@@ -3,13 +3,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from './Main';
 import Home from '../assets/Svgs/Home';
 import Chat from './Chat';
-import Chat1 from '../assets/Svgs/Chat';
 import AddPost from './AddPost';
 import Post from '../assets/Svgs/Post';
 import Notfication from './Notfication';
 import Notf from '../assets/Svgs/Notf';
 import ProfileScreen from './ProfileScreen';
 import ProfileMain from '../assets/Svgs/ProfileMain';
+import Search from '../assets/Svgs/Search';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const TabScreen = () => {
           if (route.name === 'Main') {
             iconComponent = <Home size={size} fill={focused ? '#0677E8' : color} />;
           } else if (route.name === 'Chat') {
-            iconComponent = <Chat1 size={size} fill={focused ? '#0677E8' : color} />;
+            iconComponent = <Search size={size} fill={focused ? '#0677E8' : color} />;
           } else if (route.name === 'Post') {
             iconComponent = <Post size={size} fill={focused ? '#0677E8' : color} />;
           } else if (route.name === 'notf') {

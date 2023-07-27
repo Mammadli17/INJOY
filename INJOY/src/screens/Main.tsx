@@ -8,21 +8,19 @@ import Home from '../assets/Svgs/Home';
 
 const Main = ({navigation}:any) => {
 
-  let dispatch = useDispatch();
+//   let dispatch = useDispatch();
 
-  const signoutApp = () => {
-    AsyncStorage.removeItem("token")
-      .then(res => {
-        dispatch(signout())
-        navigation.navigate("CheckToken")
-  })
-}
+//   const signoutApp = () => {
+//     AsyncStorage.removeItem("token")
+//       .then(res => {
+//         dispatch(signout())
+//         navigation.navigate("CheckToken")
+//   })
+// }
 return (
-  <SafeAreaView style={{backgroundColor:'#131621',flex:1}}>
-    <Text>DashboardScreen</Text>
-    <Button title='Signout' onPress={signoutApp}></Button>
-    <Home/>
-  </SafeAreaView>
+  <View style={{backgroundColor:'#131621',flex:1}}>
+
+  </View>
 )
 }
 
