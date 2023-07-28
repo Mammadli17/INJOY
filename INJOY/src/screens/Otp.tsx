@@ -46,9 +46,9 @@ const Otp = ({navigation,route}: any) => {
     
     axios.post("http://192.168.100.27:8080/api/user/confirm", { email:email, code:code })
         .then(res => {
-            console.log("salam",res.data?.token);
-            console.log("salam");
-           
+            console.log(res.data?.token);
+            console.log("user: ",JSON.stringify(res.data?.user));
+            AsyncStorage.setItem('user',JSON.stringify(res.data?.user))
             
             AsyncStorage.setItem("token", res.data?.token)
             .then(res => {

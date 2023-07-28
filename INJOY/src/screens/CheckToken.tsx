@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { tokenCheck } from '../util/authHelper';
 import { login, signout } from '../redux/slices/loginSliceC';
 
+
 const CheckToken = ({ navigation }: any) => {
   const isLoggedIn = useSelector((state: { login: { value: boolean } }) => state.login.value);
   const [loading, setloading] = useState(true);

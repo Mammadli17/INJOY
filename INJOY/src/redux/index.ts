@@ -2,13 +2,15 @@
   import { Login } from "./slices/LoginSlice";
   import { LoginSliceC } from "./slices/loginSliceC";
 import { SignIn } from "./slices/SignInSlice";
+import { userReducer } from "./slices/UserSlice";
 
 
   export const store = configureStore({
     reducer: {
     LoginSlice:Login,
     login: LoginSliceC,
-    SignIn:SignIn
+    SignIn:SignIn,
+    User: userReducer
     },
   });
 

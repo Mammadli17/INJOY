@@ -19,13 +19,11 @@ const userController = {
                         code: randomCode,
                         seria:req.body.seria,
                         FullName:req.body.FullName,
-                    
-
                     });
                     user.codeExpire = moment().add(120, 'seconds');
                     user.save()
                         .then(saveRes => {
-                            res.json(saveRes)
+                            res.json(user)
                         })
                         .catch(err => {
                             res.status(500).json(err)
@@ -52,7 +50,7 @@ const userController = {
                             data.save();
     
                             let token = jwt.sign(req.body.email,privateKey);
-                            res.json({token: token })
+                            res.json({token: token, user:data})
                         }
                         else{
                             res.status(500).json({"message":"Code counter or code expire error!"})
@@ -94,6 +92,54 @@ const userController = {
             })
 
     },
+    updateProfilePicture: (req, res) => {
+        const { _id, picturelink } = req.body;
+
+        // Find the user by the provided id
+        User.findById(_id)
+            .then(user => {
+                if (!user) {
+                    return res.status(404).json({ message: "User not found" });
+                }
+
+                // Update the profile picture link
+                user.profilepicture = picturelink;
+
+                // Save the updated user in the database
+                user.save()
+                    .then(updatedUser => {
+                        res.json(updatedUser);
+                    })
+                    .catch(err => {
+                        res.status(500).json({ message: "Failed to update profile picture" });
+                    });
+            })
+            .catch(err => {
+                res.status(500).json({ message: "Mongo error!" });
+            });
+
+        },
+
+        getUser: (req, res) => {
+            const { _id} = req.body;
+    
+            // Find the user by the provided id
+            User.findById(_id)
+                .then(user => {
+                    if (!user) {
+                        return res.status(404).json({ message: "User not found" });
+                    }
+    
+                 res.json(user)
+                })
+                .catch(err => {
+                    res.status(500).json({ message: "Mongo error!" });
+                });
+    
+            },
+    
+          
+        
   
 }
 
