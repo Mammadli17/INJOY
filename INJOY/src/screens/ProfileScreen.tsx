@@ -1,63 +1,81 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
-import { View, Image, Button, Text } from 'react-native';
-import { launchImageLibrary, ImageLibraryOptions, Asset } from 'react-native-image-picker';
-import uploadProfilePicture from '../ApiPosts/uploadProfilePicture';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { View, Text, Button, Image } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 
-const ImagePickerComponent = () => {
-  const [imageUri, setImageUri] = useState<any>('');
-  const [userData, setUserData] = useState<any>(null);
-  
-  useEffect(() => {
-    getUserData();
-  }, []);
+const App = () => {
+  const [files, setFiles] = useState([]);
 
-  const getUserData = async () => {
-    try {
-      const user: any = await AsyncStorage.getItem('user');
-      const parsedUserData = JSON.parse(user);
-      setUserData(parsedUserData);
-      console.log("us", parsedUserData);
-    } catch (error) {
-      console.error('Hata:', error);
-    }
+  const getFiles = () => {
+    axios.get('http://192.168.100.27:8080/api/images')
+      .then(response => {
+        setFiles(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching files:', error);
+      });
   };
 
+  const [file, setFile] = useState<any>({});
 
-  const pickImage = () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'photo', // You can also use 'video' or 'mixed' depending on your requirements
-    };
-  
-    launchImageLibrary(options, async (response: any) => {
-      if (response && !response.didCancel) {
-        await setImageUri(response.assets[0].uri);
-        console.log("imageee",imageUri);
-        
-        console.log(userData._id); // Check if userData._id is correctly logged
-        try {
-          // Assuming uploadProfilePicture function accepts _id and imageUri as parameters
-          uploadProfilePicture(userData._id,imageUri)
-          console.log('Image uploaded successfully!');
-        } catch (error) {
-          console.error('Error uploading image:', error);
+  const renderFiles = () => {
+    return files.map((file  : any, index) => (
+      <Image
+        key={index}
+        source={{ uri: file.url }}
+        style={{ width: 100, height: 100 }}
+      />
+    ));
+  };
+
+  const upload = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo'
+      },
+      response => {
+        if (!response.didCancel) {
+          setFile(response);
         }
       }
+    );
+  };
+
+  const postFile = () => {
+    if (!file || !file.assets || file.assets.length === 0) {
+      console.log('Select an image first!');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('profileImg', {
+      uri: file.assets[0].uri,
+      name: file.assets[0].fileName,
+      type: file.assets[0].type,
     });
-  };  
- 
-  
- 
+    formData.append('userId', "64c4131e87e34c429e2e8048" );
+
+    axios.post('http://192.168.100.27:8080/api/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(() => {
+      console.log('Upload successful!');
+    })
+    .catch(error => {
+      console.log('Upload error:', error);
+    });
+  };
+
   return (
-    <View>
-      {imageUri && <Image source={{
-          uri:imageUri,
-        }}
-        style={{height:50,width:50}} />}
-      <Button title="Resim Seç" onPress={pickImage} />
-      {userData && <Text style={{ fontSize: 21, color: "red" }}>{userData.email}</Text>}
+    <View style={{ backgroundColor: 'white', padding: 20 }}>
+      <Button title='Upload' onPress={upload} />
+      <Button title='POST' onPress={postFile} />
+      <Button title='GET' onPress={getFiles} />
+      {renderFiles()}
     </View>
   );
 };
 
-export default ImagePickerComponent;
+export default App;

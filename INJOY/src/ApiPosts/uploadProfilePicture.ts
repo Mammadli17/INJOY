@@ -1,21 +1,34 @@
 import axios from 'axios';
 
-const uploadProfilePicture = (id:any,imageuri:any) => {
+const uploadProfilePicture = async (userId: any, image: any) => {
+  console.log(userId);
+  console.log(image);
 
-    console.log("functiona girdiiii");
+  try {
+    const formData = new FormData();
+   
     
-    // console.log(_id);
-    // console.log(picturelink);
-    
-    
-    // Data to send in the request body
-    const data = {
-        _id:id,
-        picturelink: imageuri
+    // Oluşturulan File nesnesini FormData'ya ekle
+    const file = {
+      uri: image.uri,
+      type: image.type,
+      name: image.fileName, // image.fileName değerini kullanmalısınız
     };
+    formData.append('profileImg', file);
 
-    // Make the HTTP POST request using axios
-    const response =  axios.post("http://192.168.100.27:8080/api/user/uploadProfil", data);
+    formData.append('_id', userId);
+
+    const response = await axios.post('http://192.168.100.27:8080/api/user/updateProfile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    // Handle error
+    console.error('Failed to upload profile picture:', error);
+    throw error;
+  }
 };
 
 export default uploadProfilePicture;

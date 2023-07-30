@@ -3,6 +3,10 @@ const { confirmCodeEmail } = require("../utils/emailService");
 var jwt = require('jsonwebtoken');
 var moment = require('moment')
 let  privateKey = "lambofgod";
+const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const userController = {
 
 
@@ -92,34 +96,6 @@ const userController = {
             })
 
     },
-    updateProfilePicture: (req, res) => {
-        const { _id, picturelink } = req.body;
-
-        // Find the user by the provided id
-        User.findById(_id)
-            .then(user => {
-                if (!user) {
-                    return res.status(404).json({ message: "User not found" });
-                }
-
-                // Update the profile picture link
-                user.profilepicture = picturelink;
-
-                // Save the updated user in the database
-                user.save()
-                    .then(updatedUser => {
-                        res.json(updatedUser);
-                    })
-                    .catch(err => {
-                        res.status(500).json({ message: "Failed to update profile picture" });
-                    });
-            })
-            .catch(err => {
-                res.status(500).json({ message: "Mongo error!" });
-            });
-
-        },
-
         getUser: (req, res) => {
             const { _id} = req.body;
     
@@ -137,8 +113,11 @@ const userController = {
                 });
     
             },
-    
-          
+
+            getPicture: (req, res) => {
+                
+             
+            }
         
   
 }

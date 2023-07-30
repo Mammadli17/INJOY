@@ -1,22 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-interface GetUserRequest {
-  id: string;
-}
-
-interface GetUserResponse {
-  user: User;
-}
 
 interface UserState {
-  data: User | null;
+  data: any;
   loading: 'rejected' | 'pending' | 'fulfilled' | null;
   error: any;
 }
@@ -27,10 +14,15 @@ const initialState: UserState = {
   error: null,
 };
 
-export const fetchUser = createAsyncThunk('user/fetchUser', async (reqData: GetUserRequest) => {
-  const response = await axios.post<GetUserResponse>("http://192.168.100.27:8080/api/user/getuser", reqData);
-  return response.data.user;
+export const fetchUser = createAsyncThunk('user/fetchUser', async (payload: any) => {
+  const response = await axios.post<any>("http://192.168.100.27:8080/api/user/getuser", payload);
+  console.log(response.data,"response");
+  
+  return response.data;
+
+  
 });
+
 
 const userSlice = createSlice({
   name: 'user',
@@ -41,9 +33,11 @@ const userSlice = createSlice({
       .addCase(fetchUser.pending, (state) => {
         state.loading = 'pending';
       })
-      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
+      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = 'fulfilled';
         state.data = action.payload;
+        console.log(action.payload , " action");
+        
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.loading = 'rejected';
