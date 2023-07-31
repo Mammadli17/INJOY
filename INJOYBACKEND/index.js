@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(fileUpload());
 app.use('/api/user', userRoutes)
+
 app.get('/api/images', (req, res) => {
   const imageDir = path.join(__dirname, 'images');
   fs.readdir(imageDir, (err, files) => {
@@ -31,15 +32,7 @@ app.get('/api/images', (req, res) => {
     }
   });
 });
-app.post("/token", (req,res) => {
-    let token = req.body.token;
-    try {
-        jwt.verify(token, "lambofgod");
-        res.send("OK");
-    } catch (error) {
-        res.status(500).send("Token EXPIRE!");
-    }
-})
+
 app.post('/api/upload', async (req, res) => {
   if (!req.files || !req.files.profileImg) {
     res.status(400).send('No file uploaded.');
@@ -61,12 +54,12 @@ app.post('/api/upload', async (req, res) => {
         console.error('Error saving image:', err);
         res.status(500).send('Server Error');
       } else {
-        // Resim başarıyla yüklendiyse, resmin adını ve konumunu veritabanına kaydedelim.
-        const userId = req.body.userId; // React tarafından gelen kullanıcı kimliğini alıyoruz
-        const profilePicturePath = path.join(targetDir, newFileName);
+        // If the image is uploaded successfully, save the image URI to the database instead of the local file path.
+        const userId = req.body.userId; // Get the user ID from the request body (sent from the React app).
+        const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
 
         try {
-          const updatedUser = await User.findByIdAndUpdate(userId, { profilepicture: profilePicturePath }, { new: true });
+          const updatedUser = await User.findByIdAndUpdate(userId, { profilepicture: profilePictureURI }, { new: true });
           res.send('Ok');
         } catch (err) {
           console.error('Error updating user profile picture:', err);
@@ -78,6 +71,16 @@ app.post('/api/upload', async (req, res) => {
     res.status(500).send("Ext error");
   }
 });
+
+app.post("/token", (req,res) => {
+  let token = req.body.token;
+  try {
+      jwt.verify(token, "lambofgod");
+      res.send("OK");
+  } catch (error) {
+      res.status(500).send("Token EXPIRE!");
+  }
+})
 
 app.get('/', (req, res) => {
   res.send('OK');

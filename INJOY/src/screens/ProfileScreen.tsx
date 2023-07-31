@@ -17,14 +17,19 @@ const App = () => {
   };
 
   const [file, setFile] = useState<any>({});
-
+  console.log(files);
   const renderFiles = () => {
+   
+    
     return files.map((file  : any, index) => (
+     <>
+         
       <Image
         key={index}
         source={{ uri: file.url }}
         style={{ width: 100, height: 100 }}
       />
+     </>
     ));
   };
 
@@ -73,6 +78,8 @@ const App = () => {
       <Button title='Upload' onPress={upload} />
       <Button title='POST' onPress={postFile} />
       <Button title='GET' onPress={getFiles} />
+      
+      
       {renderFiles()}
     </View>
   );

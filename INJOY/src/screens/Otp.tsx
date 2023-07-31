@@ -89,13 +89,13 @@ const Otp = ({navigation,route}: any) => {
         </TouchableOpacity>
       </View>
       <View style={{ width: "85%", height: 450, backgroundColor: "#141416", left: 30, borderRadius: 30, marginTop: "16%" ,borderWidth:1,borderColor:"#0677E8",}}>
-        <Text style={{ fontSize: 24, textAlign: "center", marginTop: "10%" }}>
+        <Text style={{ fontSize: 24, textAlign: "center", marginTop: "10%" , color:"white" }}>
           Verify Email
         </Text>
         <Text style={{ textAlign: "center", color: "gray", marginTop: "5%" }}>
           We Have Sent Code To Your Email
         </Text>
-        <Text style={{ textAlign: "center", marginTop: "10%" }}>
+        <Text style={{ textAlign: "center", marginTop: "10%" ,color:"white"}}>
           {email}
         </Text>
 
@@ -105,6 +105,7 @@ const Otp = ({navigation,route}: any) => {
               key={index}
               ref={ref}
               style={{
+                color:"white",
                 borderColor:"#0677E8",
                 borderWidth:1,
                 backgroundColor: "#141416",

@@ -186,7 +186,7 @@ const SignIn = ({ navigation }: any) => {
             </Text>
           </TouchableOpacity>
           <View style={{ marginTop: 20, flexDirection: "row", gap: -70 }}>
-            <Text style={{ marginHorizontal: 80, fontSize: 14 }}>
+            <Text style={{ marginHorizontal: 80, fontSize: 14,color:"white" }}>
               Create new  Account?
             </Text>
             <TouchableOpacity onPress={()=>navigation.navigate('Register')} >
@@ -199,7 +199,7 @@ const SignIn = ({ navigation }: any) => {
           <View style={styles.line}>
 
           </View>
-          <Text style={{ textAlign: "center", fontSize: 14, marginTop: 15 }}>
+          <Text style={{ textAlign: "center", fontSize: 14, marginTop: 15,color:"white" }}>
             Continue With Accounts
           </Text>
 
@@ -224,12 +224,14 @@ const styles = StyleSheet.create({
     flexGrow: 0.2,
   },
   header: {
-    marginTop: '10%',
+    marginTop: '8%',
     marginHorizontal: 20,
+   
   },
   headertext: {
-    fontSize: 40,
+    fontSize: 42,
     fontWeight: '500',
+    color:"white"
   },
   formContainer: {
     flex: 1,

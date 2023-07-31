@@ -199,7 +199,7 @@ const Register = ({ navigation }: any) => {
           </TouchableOpacity>
 
           <View style={{ marginTop: 20, flexDirection: "row", gap: -70 }}>
-            <Text style={{ marginHorizontal: 80, fontSize: 14 }}>
+            <Text style={{ marginHorizontal: 80, fontSize: 14 ,color:"white"}}>
               Already Have An Account?
             </Text>
             <TouchableOpacity onPress={()=>navigation.navigate('SignIn')} >
@@ -211,7 +211,7 @@ const Register = ({ navigation }: any) => {
           <View style={styles.line}>
 
           </View>
-          <Text style={{ textAlign: "center", fontSize: 14, marginTop: 15 }}>
+          <Text style={{ textAlign: "center", fontSize: 14, marginTop: 15,color:"white" }}>
             Continue With Accounts
           </Text>
 
@@ -236,12 +236,13 @@ const styles = StyleSheet.create({
     flexGrow: 0.2,
   },
   header: {
-    marginTop: '10%',
+    marginTop: '5%',
     marginHorizontal: 20,
   },
   headertext: {
     fontSize: 40,
     fontWeight: '500',
+    color:"white"
   },
   formContainer: {
     flex: 1,
