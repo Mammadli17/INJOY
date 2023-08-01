@@ -18,7 +18,7 @@ const onBoardingData = [
   {
     title: 'Enjoy Your Life Every Time',
     description: 'Dummy text is also used to demonstrate the appearance of different typefaces and layouts',
-    image: require('../assets/pictures/onbording3.png'),
+    image: require('../assets/pictures/onbording3.png')
   },
 ];
 
