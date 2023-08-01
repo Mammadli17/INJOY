@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Cancel from '../assets/Svgs/Cancel'
 
 const AddPost = () => {
   return (
     <View>
-      <Text>AddPost</Text>
+      <Cancel/>
     </View>
   )
 }
