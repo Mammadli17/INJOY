@@ -1,46 +1,62 @@
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ActivityIndicator, Modal, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  TextInput,
+  Keyboard,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/slices/UserSlice';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import axios from "axios";
-import { AppDispatch } from '../redux';
+import { launchImageLibrary } from 'react-native-image-picker';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cancel from '../assets/Svgs/Cancel';
 import Done from '../assets/Svgs/Done';
+import { AppDispatch } from '../redux';
 import Edit from '../assets/Svgs/Edit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const ProfileScreen = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { data, error, loading } = useSelector((state: any) => state.User);
-  console.log("dattt", data);
+  const dispatch : AppDispatch = useDispatch();
+  const { data, error, loading } = useSelector((state:any) => state.User);
 
   const [newImage, setNewImage] = useState<any>(null);
   const [loadingImageUpload, setLoadingImageUpload] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
-  const [user, setuser] = useState<any>()
+  const [user, setuser] = useState<any>();
+  const [bio, setbio] = useState('');
+  const [showButton, setShowButton] = useState(false);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userData = await AsyncStorage.getItem('user');
         if (userData) {
           const userr = JSON.parse(userData);
-          setuser(userr); // You can directly call setuser here.
-          dispatch(fetchUser({ _id: userr._id })); // Use userr._id here instead of user._id
-          console.log(userr._id);
-        } 
+          setuser(userr);
+          dispatch(fetchUser({ _id: userr._id }));
+        }
       } catch (error) {
         console.log('Error retrieving user data from AsyncStorage:', error);
       }
     };
-  
+
     fetchUserData();
   }, []);
 
+  const handleBioChange = (text:any) => {
+    setbio(text);
+    setShowButton(true);
+  };
 
   const handleImageSelect = () => {
     launchImageLibrary(
@@ -50,22 +66,19 @@ const ProfileScreen = () => {
       (response) => {
         if (!response.didCancel) {
           setNewImage(response);
-          setModalVisible(true); 
-          setModalVisible1(false); 
-
+          setModalVisible(true);
+          setModalVisible1(false);
         }
       }
     );
   };
-const modal =()=>{
-  setModalVisible1(true)
-}
+
   const handleImageUpload = () => {
     if (!newImage || !newImage.assets || newImage.assets.length === 0) {
       return;
     }
 
-    setLoadingImageUpload(true); // Set loading state to true
+    setLoadingImageUpload(true);
 
     const formData = new FormData();
     formData.append('profileImg', {
@@ -90,9 +103,31 @@ const modal =()=>{
       })
       .finally(() => {
         setLoadingImageUpload(false);
-        setModalVisible(false); 
+        setModalVisible(false);
       });
-      setModalVisible1(false)
+    setModalVisible1(false);
+  };
+
+  const saveBio = () => {
+    const apiUrl = 'http://192.168.100.27:8080/api/user/bio';
+
+    axios
+      .post(apiUrl, {
+        _id: user._id,
+        bio: bio,
+      })
+      .then((response) => {
+        console.log('Başarıyla kaydedildi:', response.data);
+
+        dispatch(fetchUser({ _id: user._id }));
+
+        setShowButton(false);
+        setbio('');
+        Keyboard.dismiss();
+      })
+      .catch((error) => {
+        console.error('Hata oluştu:', error);
+      });
   };
 
   return (
@@ -104,7 +139,7 @@ const modal =()=>{
 
       <View style={styles.imageContainer}>
         {data?.profilepicture ? (
-          <TouchableOpacity onPress={modal}>
+          <TouchableOpacity onPress={() => setModalVisible1(true)}>
             <Image
               source={{ uri: data?.profilepicture }}
               style={styles.image}
@@ -112,22 +147,45 @@ const modal =()=>{
             />
           </TouchableOpacity>
         ) : (
-    
-          <TouchableOpacity onPress={modal}>
+          <TouchableOpacity onPress={() => setModalVisible1(true)}>
             <Image
-            source={require('../assets/pictures/profile.jpg')}
-            resizeMode="cover"
-            style={styles.image}
-          />
+              source={require('../assets/pictures/profile.jpg')}
+              resizeMode="cover"
+              style={styles.image}
+            />
           </TouchableOpacity>
         )}
       </View>
+
+      <View style={{ marginTop: '16%' }}>
+        <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>
+          {data?.FullName}
+        </Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ alignItems: 'center' }}>
+          <TextInput
+            style={{ fontSize: 16, color: 'gray' }}
+            placeholder={data?.bio}
+            value={bio}
+            onChangeText={handleBioChange}
+          />
+        </View>
+        {showButton && (
+          <TouchableOpacity onPress={saveBio}>
+            <Text style={{ color: '#0C77E9' }}>Save</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <Modal
         animationType="fade"
         visible={modalVisible1}
         transparent={true}
         onRequestClose={() => setModalVisible(false)}
       >
+        {/* Modal content when clicking on the profile picture */}
         <View style={styles.modalContainer}>
           {data?.profilepicture && (
             <Image
@@ -136,14 +194,12 @@ const modal =()=>{
               resizeMode="cover"
             />
           )}
-
           <View style={styles.modalButtons}>
-
-            <Pressable  onPress={handleImageSelect}>
-              <Edit/>
+            <Pressable onPress={handleImageSelect}>
+              <Edit />
             </Pressable>
             <TouchableOpacity onPress={() => setModalVisible1(false)}>
-              <Cancel/>
+              <Cancel />
             </TouchableOpacity>
           </View>
         </View>
@@ -155,6 +211,7 @@ const modal =()=>{
         transparent={true}
         onRequestClose={() => setModalVisible1(false)}
       >
+        {/* Modal content when uploading a new profile picture */}
         <View style={styles.modalContainer}>
           {newImage && (
             <Image
@@ -163,21 +220,18 @@ const modal =()=>{
               resizeMode="cover"
             />
           )}
-
           <View style={styles.modalButtons}>
-            <View style={{flexDirection:"row",left:"6%"}}>
-            <Pressable style={{right:"100%",marginTop:"1%"}} onPress={() => setModalVisible(false)}>
-              <Cancel/>
-            </Pressable>
-
-            <Pressable onPress={handleImageUpload}>
-              <Done/>
-            </Pressable>
+            <View style={{ flexDirection: 'row', left: '6%' }}>
+              <Pressable style={{ right: '100%', marginTop: '1%' }} onPress={() => setModalVisible(false)}>
+                <Cancel />
+              </Pressable>
+              <Pressable onPress={handleImageUpload}>
+                <Done/>
+              </Pressable>
             </View>
           </View>
         </View>
       </Modal>
-
     </View>
   );
 };
@@ -219,28 +273,7 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    gap:50,
- 
-  },
-  modalButton: {
-    backgroundColor: '#0677E8',
-    padding: 10,
-    borderRadius: 8,
-    right:"100%"
-  },
-  modalButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  uploadButton: {
-    backgroundColor: '#33FF57',
-    padding: 10,
-    marginTop: 20,
-    alignSelf: 'center',
-  },
-  uploadButtonText: {
-    color: 'white',
-    fontSize: 16,
+    gap: 50,
   },
 });
 

@@ -22,7 +22,7 @@ const userController = {
                         password: req.body.password,
                         code: randomCode,
                         seria:req.body.seria,
-                        FullName:req.body.FullName,
+                        FullName:req.body.fullName,
                     });
                     user.codeExpire = moment().add(120, 'seconds');
                     user.save()
@@ -113,11 +113,28 @@ const userController = {
                 });
     
             },
-
-            getPicture: (req, res) => {
-                
-             
-            }
+            updateBio: (req, res) => {
+                const { _id, bio } = req.body;
+        
+                // Find the user by the provided id
+                User.findById(_id)
+                    .then(user => {
+                        if (!user) {
+                            return res.status(404).json({ message: "User not found" });
+                        }
+                        user.bio = bio;
+                        user.save()
+                            .then(updatedUser => {
+                                res.json(updatedUser);
+                            })
+                            .catch(err => {
+                                res.status(500).json({ message: "Failed to update bio", error: err });
+                            });
+                    })
+                    .catch(err => {
+                        res.status(500).json({ message: "Mongo error!", error: err });
+                    });
+            },
         
   
 }
