@@ -99,25 +99,19 @@ const userController = {
     },
         getUser: (req, res) => {
             const { _id} = req.body;
-    
-            // Find the user by the provided id
             User.findById(_id)
                 .then(user => {
                     if (!user) {
                         return res.status(404).json({ message: "User not found" });
                     }
-    
                  res.json(user)
                 })
                 .catch(err => {
                     res.status(500).json({ message: "Mongo error!" });
                 });
-    
             },
             updateBio: (req, res) => {
                 const { _id, bio } = req.body;
-        
-                // Find the user by the provided id
                 User.findById(_id)
                     .then(user => {
                         if (!user) {
@@ -138,7 +132,6 @@ const userController = {
             },  createPost: (req, res) => {
                 const { _id, title } = req.body;
                 console.log(_id);
-        
                 User.findById(_id)
                     .then(user => {
                         if (!user) {

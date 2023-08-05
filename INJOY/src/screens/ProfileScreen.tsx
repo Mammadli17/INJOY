@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/slices/UserSlice';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary,launchCamera } from 'react-native-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cancel from '../assets/Svgs/Cancel';
