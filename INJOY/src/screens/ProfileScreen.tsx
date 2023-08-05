@@ -38,6 +38,8 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      
+      
       try {
         const userData = await AsyncStorage.getItem('user');
         if (userData) {
@@ -89,7 +91,7 @@ const ProfileScreen = () => {
     formData.append('userId', user._id);
 
     axios
-      .post('http://192.168.100.27:8080/api/upload', formData, {
+      .post('http://192.168.100.31:8080/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -109,7 +111,7 @@ const ProfileScreen = () => {
   };
 
   const saveBio = () => {
-    const apiUrl = 'http://192.168.100.27:8080/api/user/bio';
+    const apiUrl = 'http://192.168.100.31:8080/api/user/bio';
 
     axios
       .post(apiUrl, {

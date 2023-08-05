@@ -2,6 +2,8 @@ const { userRoutes } = require('./routes/userRoutes');
 const { db } = require('./config/db');
 var jwt = require('jsonwebtoken');
 const { User } = require('./models/User');
+const { Post } = require('./models/Post');
+
 db.connect()
 const express = require('express');
 const app = express();
@@ -32,7 +34,81 @@ app.get('/api/images', (req, res) => {
     }
   });
 });
+app.post('/api/s', async (req, res) => {
+  const { _id, title } = req.body;
+  console.log(_id);
 
+  User.findById(_id)
+      .then(user => {
+        
+        
+          if (!user) {
+              return res.status(404).json({ message: "User not found" });
+          }
+      
+              // console.log(req.files.postImg.name);
+          // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
+          if (req.files && req.files.image) {
+            
+             
+              const extName = path.extname(req.files.image.name);
+              const targetDir = path.join(__dirname, 'images');
+                    
+              if (!fs.existsSync(targetDir)) {
+                  fs.mkdirSync(targetDir);
+              }
+              
+              if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
+                  const newFileName = uuidv4() + extName;
+                  req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
+                      if (err) {
+                          console.error('Error saving image:', err);
+                          res.status(500).send('Server Error');
+                      } else {
+                          const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
+                          
+                          const post = new Post({
+                              title: title,
+                              content: req.body.content,
+                              user: _id,
+                              image: profilePictureURI // Resim URI'sini gönderiye ekleyelim.
+                          });
+
+                          // Gönderiyi veritabanına kaydedelim.
+                          post.save()
+                              .then(savedPost => {
+                                  res.json(savedPost);
+                              })
+                              .catch(err => {
+                                  res.status(500).json({ message: "Failed to save the post", error: err });
+                              });
+                      }
+                  });
+              } else {
+                  res.status(500).send("Ext error");
+              }
+          } else {
+              // Resim yüklenmediyse sadece gönderiyi kaydedelim.
+              const post = new Post({
+                  title: title,
+                  content: req.body.content,
+                  user: _id
+              });
+
+              // Gönderiyi veritabanına kaydedelim.
+              post.save()
+                  .then(savedPost => {
+                      res.json(savedPost);
+                  })
+                  .catch(err => {
+                      res.status(500).json({ message: "Failed to save the post", error: err });
+                  });
+          }
+      })
+      .catch(err => {
+          res.status(500).json({ message: "Mongo error!", error: err });
+      });
+})
 app.post('/api/upload', async (req, res) => {
   if (!req.files || !req.files.profileImg) {
     res.status(400).send('No file uploaded.');

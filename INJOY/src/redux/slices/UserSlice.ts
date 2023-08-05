@@ -15,7 +15,7 @@ const initialState: UserState = {
 };
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (payload: any) => {
-  const response = await axios.post<any>("http://192.168.100.27:8080/api/user/getuser", payload);
+  const response = await axios.post<any>("http://192.168.100.31:8080/api/user/getuser", payload);
   console.log(response.data,"response");
   
   return response.data;

@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema({
         type:Number,
         default:3
     },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
     codeExpire: Date, 
     isActive:{
         type:Boolean,

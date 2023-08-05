@@ -9,6 +9,8 @@ userRoutes.post('/confirm', userController.confirmCode)
 userRoutes.post('/login', userController.login)
 userRoutes.post('/getuser', userController.getUser)
 userRoutes.post('/bio', userController.updateBio)
+userRoutes.post('/post', userController.createPost)
+userRoutes.get('/getpost', userController.getAllPosts)
 
 
 
