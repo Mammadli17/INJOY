@@ -5,10 +5,12 @@ import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import Galery from '../assets/Svgs/Galery';
 import Camera from '../assets/Svgs/Camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Publish from '../assets/Svgs/Publish';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const AddPost = () => {
+  const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [image, setimage] = useState<any>('')
   const [user, setuser] = useState<any>()
@@ -81,9 +83,11 @@ const AddPost = () => {
         .then(response => {
           // İstek başarılı oldu ve sunucudan bir cevap döndü.
           console.log('Başarılı cevap:', response.data);
-          Alert.alert('Published', '', [
-            { text: 'OK', onPress: () => { } }
-          ]);
+          setShowModal(true);
+          setTimeout(() => {
+            setShowModal(false);
+          }, 1000);
+          
         })
         .catch(error => {
           // İstek başarısız oldu veya sunucu hata döndürdü.
@@ -109,9 +113,10 @@ const AddPost = () => {
         .then(response => {
           // İstek başarılı oldu ve sunucudan bir cevap döndü.
           console.log('Başarılı cevap:', response.data);
-          Alert.alert('Published', '', [
-            { text: 'OK', onPress: () => {} }
-          ]);
+          setShowModal(true);
+          setTimeout(() => {
+            setShowModal(false);
+          }, 1000);
         })
         .catch(error => {
           // İstek başarısız oldu veya sunucu hata döndürdü.
@@ -120,15 +125,9 @@ const AddPost = () => {
   
 
     }
-
-
-  
-
-
     setimage("")
     setTitle('')
   }
-
 
   return (
     <View style={styles.container}>
@@ -171,7 +170,7 @@ const AddPost = () => {
         <View></View>
 
       ) : (
-        <View style={{ marginTop: "80%", flexDirection: "row", justifyContent: "space-around", flex: 0.2 }}>
+        <View style={{ marginTop: screenHeight/4, flexDirection: "row", justifyContent: "space-around", flex: 0.2 }}>
           <TouchableOpacity onPress={handleImageSelect}>
             <Galery />
           </TouchableOpacity>
@@ -180,6 +179,11 @@ const AddPost = () => {
           </TouchableOpacity>
         </View>
 
+      )}
+       {showModal && (
+        <View style={styles.modalContainer}>
+         <Publish/>
+        </View>
       )}
     </View>
   );
@@ -190,5 +194,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#131621',
     flex: 1,
+  },  modalContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

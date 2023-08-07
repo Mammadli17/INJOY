@@ -168,8 +168,9 @@ const ProfileScreen = () => {
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <TextInput
-            style={{ fontSize: 16, color: 'gray' }}
+            style={{ fontSize: 16,color:"gray" }}
             placeholder={data?.bio}
+            placeholderTextColor={"gray"}
             value={bio}
             onChangeText={handleBioChange}
           />

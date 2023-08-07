@@ -3,6 +3,7 @@
   import { LoginSliceC } from "./slices/loginSliceC";
 import { SignIn } from "./slices/SignInSlice";
 import { userReducer } from "./slices/UserSlice";
+import { Post } from "./slices/PostSlice";
 
 
   export const store = configureStore({
@@ -10,7 +11,8 @@ import { userReducer } from "./slices/UserSlice";
     LoginSlice:Login,
     login: LoginSliceC,
     SignIn:SignIn,
-    User: userReducer
+    User: userReducer,
+    AllPost:Post
     },
   });
 
