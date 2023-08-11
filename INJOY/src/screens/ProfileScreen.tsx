@@ -143,17 +143,14 @@ const ProfileScreen = () => {
       });
   };
   const renderPost = ({ item }: any) => (
-    <>
-    {item.image && (
-      <View>
+    
+      <View >
         <Image
           source={{ uri: item.image }}
           style={styles.imagee}
           resizeMode="cover"
         />
       </View>
-    )}
-  </>
   )
   return (
     <View style={styles.container}>
@@ -224,6 +221,7 @@ const ProfileScreen = () => {
         </View>
         <View >
           <FlatList
+           style={{height:screenHeight/2.5}}
             data={filteredPosts}
             renderItem={renderPost}
             keyExtractor={(item: any) => item._id}
