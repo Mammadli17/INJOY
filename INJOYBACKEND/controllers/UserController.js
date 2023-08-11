@@ -213,6 +213,19 @@ const userController = {
                         res.status(500).json({ message: "Gönderileri alırken hata oluştu", error: err });
                     });
             },
+            getPostByUserId: (req, res) => {
+                const userId = req.body.id; // İstek gövdesinden kullanıcı ID'sini alın.
+                console.log(userId);
+                
+                Post.find({ "user": userId }) // Kullanıcının ID'sine göre uygun tüm postları bulun.
+                    .populate("user") // 'user' alanını ilgili kullanıcı ayrıntıları ile doldurun.
+                    .then(posts => {
+                        res.json(posts);
+                    })
+                    .catch(err => {
+                        res.status(500).json({ message: "Postları alırken hata oluştu", error: err });
+                    });
+            }
         
 }
 

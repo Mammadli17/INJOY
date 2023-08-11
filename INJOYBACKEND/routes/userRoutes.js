@@ -11,6 +11,7 @@ userRoutes.post('/getuser', userController.getUser)
 userRoutes.post('/bio', userController.updateBio)
 userRoutes.post('/post', userController.createPost)
 userRoutes.get('/getpost', userController.getAllPosts)
+userRoutes.post('/getpostId', userController.getPostByUserId)
 
 
 

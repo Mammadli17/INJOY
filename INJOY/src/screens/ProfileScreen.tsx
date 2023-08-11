@@ -13,20 +13,23 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/slices/UserSlice';
-import { launchImageLibrary,launchCamera } from 'react-native-image-picker';
+import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cancel from '../assets/Svgs/Cancel';
 import Done from '../assets/Svgs/Done';
 import { AppDispatch } from '../redux';
 import Edit from '../assets/Svgs/Edit';
+import { fetchUserPost } from '../redux/slices/UserPost';
+import { FlatList } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 const ProfileScreen = () => {
-  const dispatch : AppDispatch = useDispatch();
-  const { data, error, loading } = useSelector((state:any) => state.User);
+  const dispatch: AppDispatch = useDispatch();
+  const { data, error, loading } = useSelector((state: any) => state.User);
 
   const [newImage, setNewImage] = useState<any>(null);
   const [loadingImageUpload, setLoadingImageUpload] = useState(false);
@@ -35,27 +38,37 @@ const ProfileScreen = () => {
   const [user, setuser] = useState<any>();
   const [bio, setbio] = useState('');
   const [showButton, setShowButton] = useState(false);
+  const [filteredPosts, setfilteredPosts] = useState([])
+  const posts = useSelector((state: any) => state.UserPost.data);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const userData = await AsyncStorage.getItem('user');
+          if (userData) {
+            const userr = JSON.parse(userData);
+            setuser(userr);
+            await dispatch(fetchUser({ _id: userr._id }));
+            await dispatch(fetchUserPost({ id: userr._id }));
+          }
+        } catch (error) {
+          console.log('Error retrieving user data from AsyncStorage:', error);
+        }
+      };
+
+      fetchUserData();
+    }, [])
+  );
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      
-      
-      try {
-        const userData = await AsyncStorage.getItem('user');
-        if (userData) {
-          const userr = JSON.parse(userData);
-          setuser(userr);
-          dispatch(fetchUser({ _id: userr._id }));
-        }
-      } catch (error) {
-        console.log('Error retrieving user data from AsyncStorage:', error);
-      }
-    };
+    if (posts) {
+      const filteredPosts = posts.filter((post: any) => post.image);
+      setfilteredPosts(filteredPosts)
+    }
+  }, [posts]);
 
-    fetchUserData();
-  }, []);
-
-  const handleBioChange = (text:any) => {
+  const handleBioChange = (text: any) => {
     setbio(text);
     setShowButton(true);
   };
@@ -74,7 +87,6 @@ const ProfileScreen = () => {
       }
     );
   };
-
   const handleImageUpload = () => {
     if (!newImage || !newImage.assets || newImage.assets.length === 0) {
       return;
@@ -109,7 +121,6 @@ const ProfileScreen = () => {
       });
     setModalVisible1(false);
   };
-
   const saveBio = () => {
     const apiUrl = 'http://192.168.100.31:8080/api/user/bio';
 
@@ -131,7 +142,19 @@ const ProfileScreen = () => {
         console.error('Hata oluştu:', error);
       });
   };
-
+  const renderPost = ({ item }: any) => (
+    <>
+    {item.image && (
+      <View>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.imagee}
+          resizeMode="cover"
+        />
+      </View>
+    )}
+  </>
+  )
   return (
     <View style={styles.container}>
       <Image
@@ -168,8 +191,8 @@ const ProfileScreen = () => {
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <TextInput
-            style={{ fontSize: 16,color:"gray" }}
-            placeholder={data?.bio}
+            style={{ fontSize: 16, color: "gray" }}
+            placeholder={data?.bio ? data.bio : "Hey I am using INJOY!"}
             placeholderTextColor={"gray"}
             value={bio}
             onChangeText={handleBioChange}
@@ -181,6 +204,34 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         )}
       </View>
+      <View>
+        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 20, color: "white" }}>Posts</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{filteredPosts ? filteredPosts.length : 0}</Text>
+          </View>
+          <View style={{ alignItems: "center", left: screenWidth * 0.04 }}>
+            <Text style={{ fontSize: 20, color: "white" }}>Followers</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 20, color: "white" }}>Following</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+          </View>
+        </View>
+        <View style={{ backgroundColor: "gray", width: screenWidth, height: 2, marginTop: screenHeight / 30 }}>
+        </View>
+        <View >
+          <FlatList
+            data={filteredPosts}
+            renderItem={renderPost}
+            keyExtractor={(item: any) => item._id}
+            numColumns={3}
+          />
+        </View>
+      </View>
+
 
       <Modal
         animationType="fade"
@@ -229,7 +280,7 @@ const ProfileScreen = () => {
                 <Cancel />
               </Pressable>
               <Pressable onPress={handleImageUpload}>
-                <Done/>
+                <Done />
               </Pressable>
             </View>
           </View>
@@ -260,6 +311,10 @@ const styles = StyleSheet.create({
     width: screenWidth / 4,
     height: screenWidth / 4,
     borderRadius: 300,
+  }, imagee: {
+    width: screenWidth / 3,
+    height: screenWidth / 3,
+
   },
   modalContainer: {
     flex: 1,

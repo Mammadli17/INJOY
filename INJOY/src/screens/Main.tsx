@@ -53,7 +53,7 @@ const Main = () => {
           </View>
         </View>
 
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20,marginEnd:screenWidth/14 }}>
           <Text style={styles.postTitle}>{item.title}</Text>
         </View>
       </View>
@@ -62,11 +62,8 @@ const Main = () => {
           source={{ uri: item?.image }}
           style={styles.postImage}
         />
-
-
       </View>
       <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 12 }}>
-
         <View style={{ flexDirection: "row", gap: screenWidth / 10 }}>
           <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
             <Like />
@@ -85,17 +82,13 @@ const Main = () => {
               <Kayd/>
         </View>   
          </View>
-
     </View>
   );
-
   return (
     <View style={styles.container}>
       <View style={{ padding: 60 }}>
-
       </View>
       <FlatList
-
         data={posts}
         renderItem={renderPost}
         keyExtractor={(item: any) => item._id}
@@ -103,9 +96,7 @@ const Main = () => {
     </View>
   );
 }
-
 export default Main;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#131621',
