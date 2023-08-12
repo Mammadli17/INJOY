@@ -247,6 +247,8 @@ const userController = {
                 await Like.deleteOne({ _id: existingLike._id }); // Belgeyi silmek için deleteOne kullanılıyor
                 post.likes.pull(existingLike._id);
                 await post.save();
+                res.json({ message: "Post deleted successfully" });
+
             }
             else {
                 const newLike = new Like({
@@ -272,6 +274,20 @@ const userController = {
             res.status(500).json({ message: "An error occurred while liking the post" });
         }
     },
+  
+    getAllLikes: async (req, res) => {
+        try {
+            const likes = await Like.find()
+                .populate("user")
+                .populate("post")
+                .exec();
+
+            res.json(likes);
+        } catch (error) {
+            console.error("Error getting likes:", error);
+            res.status(500).json({ message: "An error occurred while getting likes" });
+        }
+    }
 
 }
 
