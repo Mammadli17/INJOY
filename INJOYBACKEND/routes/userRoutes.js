@@ -12,6 +12,7 @@ userRoutes.post('/bio', userController.updateBio)
 userRoutes.post('/post', userController.createPost)
 userRoutes.get('/getpost', userController.getAllPosts)
 userRoutes.post('/getpostId', userController.getPostByUserId)
+userRoutes.post('/postLike', userController.likePost)
 
 
 
