@@ -11,16 +11,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchLikes } from '../redux/slices/Like';
+import { fetchComments } from '../redux/slices/Comment';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
-const Main = () => {
+const Main = ({ navigation }: any) => {
   const dispatch: any = useDispatch();
   const posts = useSelector((state: any) => state.AllPost.data);
   const reversedData = [...posts].reverse();
   const likes = useSelector((state: any) => state.AllLikes.data);
+  const comments = useSelector((state: any) => state.AllComment.data);
   const [userr, setuserr] = useState<any>()
   useEffect(() => {
     dispatch(fetchPosts());
+    dispatch(fetchComments());
   }, [dispatch]);
  
   useFocusEffect(
@@ -29,6 +32,7 @@ const Main = () => {
      const fetchUserData = async () => {
       dispatch(fetchPosts())
      dispatch(fetchLikes())
+     dispatch(fetchComments())
       const userData:any = await AsyncStorage.getItem('user');
       const userr = await JSON.parse(userData);
      
@@ -71,6 +75,7 @@ const Main = () => {
   }
   const renderPost = ({ item }: any) => {
     const postLikes = likes.filter((like: any) => like.post._id === item._id);
+    const postComment = comments.filter((com: any) => com.post._id === item._id);
     const isLiked = postLikes.filter((color : any) => color.user._id === userr._id)
     const isLike = isLiked.length > 0;
     
@@ -136,9 +141,11 @@ const Main = () => {
             </Text>
           </View>
           <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
+            <TouchableOpacity onPress={()=>navigation.navigate("Comment",{ item })}>
             <Commit />
+          </TouchableOpacity>
             <Text style={{ textAlign: "center", fontSize: 16, color: "gray" }}>
-              10
+            {postComment.length ? postComment.length : "  "}
             </Text>
           </View>
         </View>
@@ -197,9 +204,11 @@ const Main = () => {
             </Text>
         </View>
         <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
-          <Commit />
+        <TouchableOpacity onPress={()=>navigation.navigate("Comment",{ item })}>
+            <Commit />
+          </TouchableOpacity>
           <Text style={{ textAlign: "center", fontSize: 16, color: "gray" }}>
-            10
+          {postComment.length ? postComment.length : "  "}
           </Text>
         </View>
       </View>

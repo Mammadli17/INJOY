@@ -8,6 +8,7 @@ import Otp from './Otp';
 import TabScreen from './TabScreen';
 import CheckToken from './CheckToken';
 import SignIn from './SignIn';
+import Comment from './Comment';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,9 @@ const StackNav = () => {
       <Stack.Screen name="Tab" component={TabScreen} options={{ headerShown: false }} />
       <Stack.Screen name="CheckToken" component={CheckToken} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+      <Stack.Screen name="Comment" component={Comment} options={{ headerShown: false }} />
+
+
     </Stack.Navigator>
   );
 };

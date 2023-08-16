@@ -9,6 +9,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const { Post } = require("../models/Post");
 const { Like } = require("../models/Like");
+const { Comment } = require("../models/Comment");
 const userController = {
 
 
@@ -243,7 +244,7 @@ const userController = {
             const existingLike = await Like.findOne({ user: userId, post: postId });
 
             if (existingLike) {
-                
+
                 await Like.deleteOne({ _id: existingLike._id }); // Belgeyi silmek için deleteOne kullanılıyor
                 post.likes.pull(existingLike._id);
                 await post.save();
@@ -256,25 +257,25 @@ const userController = {
                     post: postId,
                     auth: authId
                 });
-    
+
                 await newLike.save();
-    
+
                 console.log("sa");
                 post.likes.push(newLike._id);
                 await post.save();
-    
+
                 res.json({ message: "Post liked successfully", like: newLike });
 
             }
 
             // Yeni bir Like oluşturup kaydedelim
-           
+
         } catch (error) {
             console.error("Error liking post:", error);
             res.status(500).json({ message: "An error occurred while liking the post" });
         }
     },
-  
+
     getAllLikes: async (req, res) => {
         try {
             const likes = await Like.find()
@@ -287,7 +288,50 @@ const userController = {
             console.error("Error getting likes:", error);
             res.status(500).json({ message: "An error occurred while getting likes" });
         }
+    },
+    CommentPost: async (req, res) => {
+        try {
+            console.log("sa");
+            const { userId, postId, authId, message } = req.body;
+            const user = await User.findById(userId);
+            const auth = await User.findById(authId);
+            const post = await Post.findById(postId);
+            if (!user || !post || !auth) {
+                return res.status(404).json({ message: "User or post not found" });
+            } else {
+                const newComment = new Comment({
+                    user: userId,
+                    post: postId,
+                    auth: authId,
+                    message: message
+                });
+                post.comments.push(newComment._id);
+                await post.save();
+                await newComment.save();
+
+                res.json({ message: "Comment added successfully", comment: newComment });
+            }
+
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            res.status(500).json({ message: "An error occurred while adding the comment" });
+        }
     }
+    ,
+    getAllComments: async (req, res) => {
+        try {
+            const Comments = await Comment.find()
+                .populate("user")
+                .populate("post")
+                .exec();
+
+            res.json(Comments);
+        } catch (error) {
+            console.error("Error getting likes:", error);
+            res.status(500).json({ message: "An error occurred while getting likes" });
+        }
+    },
+
 
 }
 

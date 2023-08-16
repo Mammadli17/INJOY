@@ -13,7 +13,9 @@ userRoutes.post('/post', userController.createPost)
 userRoutes.get('/getpost', userController.getAllPosts)
 userRoutes.post('/getpostId', userController.getPostByUserId)
 userRoutes.post('/postLike', userController.likePost)
+userRoutes.post('/postComment', userController.CommentPost)
 userRoutes.get('/getAllLikes', userController.getAllLikes)
+userRoutes.get('/getAllComments', userController.getAllComments)
 
 
 
