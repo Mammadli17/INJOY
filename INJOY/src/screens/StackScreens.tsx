@@ -9,6 +9,8 @@ import TabScreen from './TabScreen';
 import CheckToken from './CheckToken';
 import SignIn from './SignIn';
 import Comment from './Comment';
+import SettingScreen from './SettingScreen';
+import SavedScreen from './SavedScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +25,8 @@ const StackNav = () => {
       <Stack.Screen name="CheckToken" component={CheckToken} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
       <Stack.Screen name="Comment" component={Comment} options={{ headerShown: false }} />
+      <Stack.Screen name="Settings" component={SettingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Saved" component={SavedScreen} options={{ headerShown: false }} />
 
 
     </Stack.Navigator>

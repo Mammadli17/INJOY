@@ -23,11 +23,12 @@ import Edit from '../assets/Svgs/Edit';
 import { fetchUserPost } from '../redux/slices/UserPost';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
+import Settings from '../assets/Svgs/Settings';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}:any) => {
   const dispatch: AppDispatch = useDispatch();
   const { data, error, loading } = useSelector((state: any) => state.User);
 
@@ -158,6 +159,11 @@ const ProfileScreen = () => {
         source={require('../assets/pictures/background.png')}
         style={{ width: screenWidth, height: screenHeight / 4 }}
       />
+      <View style={{position:'absolute',right:20,top:10}}>
+       <TouchableOpacity onPress={()=>navigation.navigate('Settings')}>
+       <Settings/>
+       </TouchableOpacity>
+      </View>
 
       <View style={styles.imageContainer}>
         {data?.profilepicture ? (

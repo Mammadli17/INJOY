@@ -91,7 +91,7 @@ const Comment = ({ route }: any) => {
             <View style={{marginBottom:20}} >
                 <View style={{flexDirection:"row",alignItems:"center",left:10}}>
                     <Image
-                        source={{ uri: item.user.profilepicture }}
+                        source={item.user.profilepicture ? { uri: item.user.profilepicture } : require('../assets/pictures/profile.jpg')}
                         style={{ height: 40, width: 40,borderRadius:100 }}
                         resizeMode="cover"
                     />
