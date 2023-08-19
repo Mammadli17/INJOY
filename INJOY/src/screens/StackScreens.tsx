@@ -11,6 +11,7 @@ import SignIn from './SignIn';
 import Comment from './Comment';
 import SettingScreen from './SettingScreen';
 import SavedScreen from './SavedScreen';
+import PostScreen from './PostScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ const StackNav = () => {
       <Stack.Screen name="Comment" component={Comment} options={{ headerShown: false }} />
       <Stack.Screen name="Settings" component={SettingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Saved" component={SavedScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="PostScreen" component={PostScreen} options={{ headerShown: false }} />
 
 
     </Stack.Navigator>

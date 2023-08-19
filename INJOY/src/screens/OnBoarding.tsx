@@ -31,7 +31,7 @@ const OnBoarding = ({ navigation }: any) => {
       navigation.navigate('Register'); // Replace 'RegistrationScreen' with the actual name of the registration screen in your app.
     } catch (error) {
       // Handle error, if any
-      console.log('Error storing onboarding completion status:', error);
+      
     }
   };
   

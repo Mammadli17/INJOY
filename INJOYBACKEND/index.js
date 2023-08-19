@@ -36,8 +36,6 @@ app.get('/api/images', (req, res) => {
 });
 app.post('/api/s', async (req, res) => {
   const { _id, title } = req.body;
-  console.log(_id);
-
   User.findById(_id)
       .then(user => {
         
@@ -46,7 +44,7 @@ app.post('/api/s', async (req, res) => {
               return res.status(404).json({ message: "User not found" });
           }
       
-              // console.log(req.files.postImg.name);
+              // (req.files.postImg.name);
           // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
           if (req.files && req.files.image) {
             
@@ -164,5 +162,6 @@ app.get('/', (req, res) => {
 
 app.listen(8080, () => {
   console.log('Server is running...');
+
 });
 

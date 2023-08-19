@@ -110,7 +110,7 @@ const SignIn = ({ navigation }: any) => {
         })
         
         .catch(error => {
-          console.log(error);
+          (error);
         });
     } else {
       Alert.alert('Please enter everything');

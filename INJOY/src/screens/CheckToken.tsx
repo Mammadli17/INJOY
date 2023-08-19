@@ -10,7 +10,7 @@ const CheckToken = ({ navigation }: any) => {
   const isLoggedIn = useSelector((state: { login: { value: boolean } }) => state.login.value);
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
-console.log("salamToken");
+("salamToken");
 
   useEffect(() => {
     // Function to check the token and update the loading state and Redux state accordingly
@@ -23,7 +23,7 @@ console.log("salamToken");
           dispatch(signout());
         }
       } catch (error) {
-        console.log('Error checking token:', error);
+       
         // Handle error if necessary
       } finally {
         setloading(false);
@@ -37,10 +37,10 @@ console.log("salamToken");
     if (!loading) {
       if (isLoggedIn) {
         navigation.navigate('Tab');
-        console.log("Navigating to 'Tab' screen.");
+        ("Navigating to 'Tab' screen.");
       } else {
         navigation.navigate('Register');
-        console.log("Navigating to 'Register' screen.");
+        
       }
     }
   }, [loading,isLoggedIn, navigation]);

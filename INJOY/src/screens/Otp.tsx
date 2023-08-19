@@ -39,21 +39,20 @@ const Otp = ({navigation,route}: any) => {
   const [timer, setTimer] = useState(120);
   let dispatch = useDispatch();
   const onSubmit = () => {
-    console.log(email);
+    (email);
     
     const code = otpValues.join('')
-    console.log(code);
-    
+   
     axios.post("http://192.168.100.31:8080/api/user/confirm", { email:email, code:code })
         .then(res => {
-            console.log(res.data?.token);
-            console.log("user: ",JSON.stringify(res.data?.user));
+            (res.data?.token);
+          
             AsyncStorage.setItem('user',JSON.stringify(res.data?.user))
             
             AsyncStorage.setItem("token", res.data?.token)
             .then(res => {
                 dispatch(login())
-                console.log("ok");
+                
                 navigation.navigate('CheckToken')
                 
             })

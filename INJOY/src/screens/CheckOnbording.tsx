@@ -18,7 +18,7 @@ const CheckOnbording = ({ navigation }: any) => {
         navigation.navigate('OnBoard'); // Navigate to the 'OnBoarding' screen/component
       }
     } catch (error) {
-      console.log('Error checking onboarding status:', error);
+     
       // Handle the error if necessary
     } finally {
       setLoading(false);

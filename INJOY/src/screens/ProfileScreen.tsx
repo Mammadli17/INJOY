@@ -28,7 +28,7 @@ import Settings from '../assets/Svgs/Settings';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const ProfileScreen = ({navigation}:any) => {
+const ProfileScreen = ({ navigation }: any) => {
   const dispatch: AppDispatch = useDispatch();
   const { data, error, loading } = useSelector((state: any) => state.User);
 
@@ -54,7 +54,6 @@ const ProfileScreen = ({navigation}:any) => {
             await dispatch(fetchUserPost({ id: userr._id }));
           }
         } catch (error) {
-          console.log('Error retrieving user data from AsyncStorage:', error);
         }
       };
 
@@ -110,11 +109,11 @@ const ProfileScreen = ({navigation}:any) => {
         },
       })
       .then(() => {
-        console.log('Upload successful!');
+        ('Upload successful!');
         dispatch(fetchUser({ _id: user._id }));
       })
       .catch((error) => {
-        console.log('Upload error:', error);
+        
       })
       .finally(() => {
         setLoadingImageUpload(false);
@@ -131,7 +130,6 @@ const ProfileScreen = ({navigation}:any) => {
         bio: bio,
       })
       .then((response) => {
-        console.log('Başarıyla kaydedildi:', response.data);
 
         dispatch(fetchUser({ _id: user._id }));
 
@@ -144,14 +142,16 @@ const ProfileScreen = ({navigation}:any) => {
       });
   };
   const renderPost = ({ item }: any) => (
-    
-      <View >
+
+    <View >
+      <TouchableOpacity onPress={() => navigation.navigate("PostScreen", { item })}>
         <Image
           source={{ uri: item.image }}
           style={styles.imagee}
           resizeMode="cover"
         />
-      </View>
+      </TouchableOpacity>
+    </View>
   )
   return (
     <View style={styles.container}>
@@ -159,10 +159,10 @@ const ProfileScreen = ({navigation}:any) => {
         source={require('../assets/pictures/background.png')}
         style={{ width: screenWidth, height: screenHeight / 4 }}
       />
-      <View style={{position:'absolute',right:20,top:10}}>
-       <TouchableOpacity onPress={()=>navigation.navigate('Settings')}>
-       <Settings/>
-       </TouchableOpacity>
+      <View style={{ position: 'absolute', right: 20, top: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+          <Settings />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.imageContainer}>
@@ -227,7 +227,7 @@ const ProfileScreen = ({navigation}:any) => {
         </View>
         <View >
           <FlatList
-           style={{height:screenHeight/2.5}}
+            style={{ height: screenHeight / 2.5 }}
             data={filteredPosts}
             renderItem={renderPost}
             keyExtractor={(item: any) => item._id}

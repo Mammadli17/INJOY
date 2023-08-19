@@ -16,7 +16,7 @@ const initialState: UserState = {
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (payload: any) => {
   const response = await axios.post<any>("http://192.168.100.31:8080/api/user/getuser", payload);
-  console.log(response.data,"response");
+  (response.data,"response");
   
   return response.data;
 
@@ -36,7 +36,7 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = 'fulfilled';
         state.data = action.payload;
-        console.log(action.payload , " action");
+        (action.payload , " action");
         
       })
       .addCase(fetchUser.rejected, (state, action) => {

@@ -74,15 +74,12 @@ const userController = {
                 }
             })
             .catch(err => {
-                console.log('Err', err);
                 res.status(500).send("Mongo error!")
             })
     }, login: (req, res) => {
         User.findOne({ email: req.body.email?.toLowerCase(), password: req.body.password })
             .then(data => {
-                console.log("data", data);
                 if (data) {
-                    console.log("s");
                     var randomCode = Math.floor(Math.random() * 10000);
                     data.code = randomCode;
 
@@ -133,14 +130,12 @@ const userController = {
             });
     }, createPost: (req, res) => {
         const { _id, title } = req.body;
-        console.log(_id);
+        (_id);
         User.findById(_id)
             .then(user => {
                 if (!user) {
                     return res.status(404).json({ message: "User not found" });
                 }
-                // console.log(req.files.postImg.name);
-                // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
                 if (req.files && req.files.image) {
 
                     const extName = path.extname(req.files.image.name);
@@ -217,8 +212,6 @@ const userController = {
     },
     getPostByUserId: (req, res) => {
         const userId = req.body.id; // İstek gövdesinden kullanıcı ID'sini alın.
-        console.log(userId);
-
         Post.find({ "user": userId }) // Kullanıcının ID'sine göre uygun tüm postları bulun.
             .populate("user") // 'user' alanını ilgili kullanıcı ayrıntıları ile doldurun.
             .then(posts => {
@@ -260,7 +253,6 @@ const userController = {
 
                 await newLike.save();
 
-                console.log("sa");
                 post.likes.push(newLike._id);
                 await post.save();
 
@@ -291,7 +283,7 @@ const userController = {
     },
     CommentPost: async (req, res) => {
         try {
-            console.log("sa");
+        
             const { userId, postId, authId, message } = req.body;
             const user = await User.findById(userId);
             const auth = await User.findById(authId);

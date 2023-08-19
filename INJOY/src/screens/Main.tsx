@@ -26,22 +26,22 @@ const Main = ({ navigation }: any) => {
   useEffect(() => {
     dispatch(fetchPosts());
     dispatch(fetchComments());
-  
+
     const fetchUserData = async () => {
       dispatch(fetchLikes());
       dispatch(fetchComments());
       const userData: any = await AsyncStorage.getItem('user');
       const userr = await JSON.parse(userData);
       setuserr(userr);
-  
+
       // Kaydedilen postları AsyncStorage'den al ve uygun renkleri ayarla
 
     };
-  
+
     fetchUserData();
   }, [dispatch]);
-  
-  
+
+
   useFocusEffect(
     React.useCallback(() => {
 
@@ -54,38 +54,38 @@ const Main = ({ navigation }: any) => {
         setsaved(sav)
         const userData: any = await AsyncStorage.getItem('user');
         const userr = await JSON.parse(userData);
-   
+
         setuserr(userr)
       }
       fetchUserData()
     }, [])
 
   );
- 
+
   const SavedFunc = async (item: any) => {
     try {
       const Saved: any = await AsyncStorage.getItem('Saved');
       let savedItems = await Saved ? JSON.parse(Saved) : [];
-  
+
       const isItemSaved = savedItems.some((savedItem: any) => savedItem._id === item._id);
       if (isItemSaved) {
         savedItems = await savedItems.filter((savedItem: any) => savedItem._id !== item._id);
       } else {
         savedItems = [item, ...savedItems];
       }
-  
+
       await AsyncStorage.setItem('Saved', JSON.stringify(savedItems));
       setsaved(savedItems)
-       
+
     } catch (error) {
       console.error('Error while handling saved items:', error);
     }
   };
-  
-  
+
+
   const LikeFunc = async (item: any) => {
     try {
-    
+
 
       const likeData = {
         userId: userr?._id,
@@ -95,7 +95,7 @@ const Main = ({ navigation }: any) => {
 
       axios.post("http://192.168.100.31:8080/api/user/postLike", likeData)
         .then(response => {
-         
+
           dispatch(fetchLikes())
         })
         .catch(error => {
@@ -110,13 +110,14 @@ const Main = ({ navigation }: any) => {
 
     }
   }
- 
+
   const renderPost = ({ item }: any) => {
-    const color = saved.filter((saved: any) => saved._id === item._id);
-    const postLikes = likes.filter((like: any) => like.post._id === item._id);
-    const postComment = comments.filter((com: any) => com.post._id === item._id);
-    const isLiked = postLikes.filter((color: any) => color.user._id === userr?._id)
+    const postLikes = likes?.filter((like: any) => like.post._id === item._id) || [];
+    const postComment = comments?.filter((com: any) => com.post._id === item._id) || [];
+    const isLiked = postLikes?.filter((color: any) => color.user._id === userr?._id) || [];
     const isLike = isLiked.length > 0;
+
+    const color = saved?.filter((saved: any) => saved._id === item._id) || [];
     return (
       <>
         {
@@ -250,9 +251,11 @@ const Main = ({ navigation }: any) => {
                     </Text>
                   </View>
                 </View>
-                <View >
-                  <Kayd />
-                </View>
+                <TouchableOpacity onPress={() => SavedFunc(item)}>
+                  <View >
+                    <Kayd fill={color.length ? "#0677E8" : null} />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
         }

@@ -117,7 +117,7 @@ const Register = ({ navigation }: any) => {
            navigation.navigate('Otp',{ email });
         })
         .catch(error => {
-          console.log(error);
+          (error);
         });
     } else {
       Alert.alert('Please enter everything');

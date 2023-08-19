@@ -37,13 +37,6 @@ const Comment = ({ route }: any) => {
 
     const LikeFunc = async () => {
         try {
-            // const userData:any = await AsyncStorage.getItem('user');
-            // const userr = JSON.parse(userData);
-
-            console.log("sa", user);
-            console.log("saaaaaaa", item._id);
-
-
             const likeData = {
                 userId: user._id,
                 postId: item._id,
@@ -53,7 +46,7 @@ const Comment = ({ route }: any) => {
 
             axios.post("http://192.168.100.31:8080/api/user/postComment", likeData)
                 .then(response => {
-                    console.log("salam");
+                    
                      dispatch(fetchComments())
                      
                 })
