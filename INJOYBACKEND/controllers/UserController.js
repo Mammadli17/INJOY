@@ -322,7 +322,27 @@ const userController = {
             console.error("Error getting likes:", error);
             res.status(500).json({ message: "An error occurred while getting likes" });
         }
+    },deletePost: async (req, res) => {
+        try {
+            const { _id } = req.body;
+            
+            // Find the post to be deleted
+            const post = await Post.findById(_id);
+    
+            if (!post) {
+                return res.status(404).json({ message: "Post not found" });
+            }
+            await Like.deleteMany({ post: _id });
+            await Comment.deleteMany({ post: _id });
+            await Post.deleteOne({ _id: _id });
+    
+            res.json({ message: "Post deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting post:", error);
+            res.status(500).json({ message: "An error occurred while deleting the post" });
+        }
     },
+    
 
 
 }

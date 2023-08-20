@@ -122,11 +122,8 @@ const Main = ({ route }: any) => {
   const color = saved?.filter((saved: any) => saved._id === item._id) || [];
 
   return (
-    <>
-      {
-        item.image ?
-          <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0,backgroundColor:"#131621" ,flex:1}}>
-            <View style={{marginTop:screenHeight/6 }}>
+          <View style={{  borderTopColor: "gray",  borderBottomWidth: 0,backgroundColor:"#131621" ,flex:1}}>
+            <View style={{marginTop:screenHeight/10 }}>
               <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                 <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
                   <View style={{}}>
@@ -170,7 +167,7 @@ const Main = ({ route }: any) => {
                 style={styles.postImage}
               />
             </View>
-            <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 12 }}>
+            <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 11,marginTop:screenHeight/5 }}>
               <View style={{ flexDirection: "row", gap: screenWidth / 10 }}>
                 <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
                   <TouchableOpacity onPress={() => LikeFunc(item)}>
@@ -196,73 +193,7 @@ const Main = ({ route }: any) => {
               </TouchableOpacity>
             </View>
           </View>
-          : <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0 }}>
-            <View >
-              <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
-                <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
-                  <View style={{}}>
-                    {item?.user?.profilepicture ? (
-
-                      <Image
-                        source={{ uri: item?.user.profilepicture }}
-                        style={styles.image}
-                        resizeMode="cover"
-                      />
-
-                    ) : (
-
-                      <Image
-                        source={require('../assets/pictures/profile.jpg')}
-                        resizeMode="cover"
-                        style={styles.image}
-                      />
-
-                    )}
-
-                  </View>
-                  <View style={{ left: screenWidth / 20, justifyContent: "center" }}>
-                    <Text style={{ fontSize: 18, color: "white" }}>
-                      {item.user?.FullName}
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <More />
-                </View>
-              </View>
-
-              <View style={{ marginTop: 20, marginEnd: screenWidth / 14 }}>
-                <Text style={styles.postTitle}>{item.title}</Text>
-              </View>
-            </View>
-            <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 12 }}>
-              <View style={{ flexDirection: "row", gap: screenWidth / 10 }}>
-                <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
-                  <TouchableOpacity onPress={() => LikeFunc(item)}>
-                    <Like fill={isLike ? "#0677E8" : "white"} />
-                  </TouchableOpacity>
-                  <Text style={{ textAlign: "center", fontSize: 16, color: "gray" }}>
-                    {postLikes.length ? postLikes.length : "  "}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>
-                  <TouchableOpacity onPress={() => navigation.navigate("Comment", { item })}>
-                    <Commit />
-                  </TouchableOpacity>
-                  <Text style={{ textAlign: "center", fontSize: 16, color: "gray" }}>
-                    {postComment.length ? postComment.length : "  "}
-                  </Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={() => SavedFunc(item)}>
-                <View >
-                  <Kayd fill={color.length ? "#0677E8" : null} />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-      }
-    </>
+    
   )
 };
 
@@ -279,8 +210,9 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: screenWidth - screenWidth / 6,
-    height: screenHeight / 3,
-    borderRadius: 20
+    height: screenHeight / 2,
+    borderRadius: 20,
+    top:10
   },
   postTitle: {
     color: 'white',
