@@ -110,6 +110,13 @@ const Main = ({ navigation }: any) => {
 
     }
   }
+  const Func = (item :any) =>{
+      if(item.user._id===userr?._id){
+        navigation.navigate("Profile")
+      }else{
+        navigation.navigate("ProfileUserScreen",{item})
+      }
+  }
 
   const renderPost = ({ item }: any) => {
     const postLikes = likes?.filter((like: any) => like.post._id === item._id) || [];
@@ -123,6 +130,7 @@ const Main = ({ navigation }: any) => {
         {
           item.image ?
             <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0 }}>
+              <TouchableOpacity onPress={()=>Func(item)}>
               <View >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                   <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
@@ -161,6 +169,7 @@ const Main = ({ navigation }: any) => {
                   <Text style={styles.postTitle}>{item.title}</Text>
                 </View>
               </View>
+              </TouchableOpacity>
               <View style={styles.postContainer}>
                 <Image
                   source={{ uri: item?.image }}

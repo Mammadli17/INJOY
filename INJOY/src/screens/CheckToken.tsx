@@ -37,15 +37,12 @@ const CheckToken = ({ navigation }: any) => {
     if (!loading) {
       if (isLoggedIn) {
         navigation.navigate('Tab');
-        ("Navigating to 'Tab' screen.");
       } else {
         navigation.navigate('Register');
         
       }
     }
   }, [loading,isLoggedIn, navigation]);
-
-  // Yükleme durumunu kontrol et ve gerekli bileşeni döndür
   const renderContent = () => {
     if (loading) {
       return (

@@ -12,6 +12,7 @@ import Comment from './Comment';
 import SettingScreen from './SettingScreen';
 import SavedScreen from './SavedScreen';
 import PostScreen from './PostScreen';
+import ProfileUserScreen from './ProfileUserScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,8 +30,7 @@ const StackNav = () => {
       <Stack.Screen name="Settings" component={SettingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Saved" component={SavedScreen} options={{ headerShown: false }} />
       <Stack.Screen name="PostScreen" component={PostScreen} options={{ headerShown: false }} />
-
-
+      <Stack.Screen name="ProfileUserScreen" component={ProfileUserScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
