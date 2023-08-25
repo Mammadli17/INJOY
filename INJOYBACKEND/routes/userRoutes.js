@@ -15,9 +15,10 @@ userRoutes.post('/getpostId', userController.getPostByUserId)
 userRoutes.post('/postLike', userController.likePost)
 userRoutes.post('/postComment', userController.CommentPost)
 userRoutes.post('/deletePost', userController.deletePost)
+userRoutes.post('/follow', userController.follow)
 userRoutes.get('/getAllLikes', userController.getAllLikes)
 userRoutes.get('/getAllComments', userController.getAllComments)
-
+userRoutes.get('/getAllFollowers', userController.getAllFollowers)
 
 
 

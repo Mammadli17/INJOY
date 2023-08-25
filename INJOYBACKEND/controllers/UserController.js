@@ -10,6 +10,7 @@ const { v4: uuidv4 } = require('uuid');
 const { Post } = require("../models/Post");
 const { Like } = require("../models/Like");
 const { Comment } = require("../models/Comment");
+const { Follow } = require("../models/Follow");
 const userController = {
 
 
@@ -283,7 +284,7 @@ const userController = {
     },
     CommentPost: async (req, res) => {
         try {
-        
+
             const { userId, postId, authId, message } = req.body;
             const user = await User.findById(userId);
             const auth = await User.findById(authId);
@@ -322,27 +323,57 @@ const userController = {
             console.error("Error getting likes:", error);
             res.status(500).json({ message: "An error occurred while getting likes" });
         }
-    },deletePost: async (req, res) => {
+    }, deletePost: async (req, res) => {
         try {
             const { _id } = req.body;
-            
+
             // Find the post to be deleted
             const post = await Post.findById(_id);
-    
+
             if (!post) {
                 return res.status(404).json({ message: "Post not found" });
             }
             await Like.deleteMany({ post: _id });
             await Comment.deleteMany({ post: _id });
             await Post.deleteOne({ _id: _id });
-    
+
             res.json({ message: "Post deleted successfully" });
         } catch (error) {
             console.error("Error deleting post:", error);
             res.status(500).json({ message: "An error occurred while deleting the post" });
         }
     },
-    
+    follow: async (req, res) => {
+        try {
+            const { follower, followed } = req.body;
+
+
+            const deletedFollow = await Follow.findOneAndDelete({ follower, followed });
+
+            if (deletedFollow) {
+                res.status(200).json({ message: 'Takip başarılı bir şekilde silindi.' });
+            } else {
+                const follow = new Follow({ follower, followed });
+                await follow.save();
+                res.status(201).json({ message: 'Takip başarılı bir şekilde oluşturuldu.' });
+            } 
+        } catch (error) {
+            res.status(500).json({ error: 'Takip silinirken bir hata oluştu.' });
+        }
+    },
+    getAllFollowers : async(req,res) =>{
+        try {
+          
+            const allFollows = await Follow.find()
+            .populate("follower") 
+            .populate("followed")
+            .exec();
+            res.status(200).json(allFollows);
+        } catch (error) {
+            res.status(500).json({ error: 'Takip kayıtları getirilirken bir hata oluştu.' });
+        }
+    }
+      
 
 
 }

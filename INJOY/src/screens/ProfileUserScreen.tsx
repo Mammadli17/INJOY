@@ -20,6 +20,7 @@ import { AppDispatch } from '../redux';
 import { fetchUserPost } from '../redux/slices/UserPost';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
+import { fetchFollows } from '../redux/slices/Follow';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
@@ -28,23 +29,66 @@ const ProfileScreen = ({ navigation,route }: any) => {
   const dispatch: AppDispatch = useDispatch();
   const [filteredPosts, setfilteredPosts] = useState([])
   const posts = useSelector((state: any) => state.UserPost.data);
-  
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchUserData = async () => {
-        try {
-          const userData = await AsyncStorage.getItem('user');
-          if (userData) {
-            await dispatch(fetchUser({ _id: item.user._id }));
-            await dispatch(fetchUserPost({ id:item.user._id }));
-          }
-        } catch (error) {
-        }
-      };
+  const followerData = useSelector((state: any) => state.AllFollows.data);
+  const [user, setUser] = useState<any>();
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [Follower, setFollower] = useState<any>();
+  const [Following, setFollowing] = useState<any>();
+ 
+ useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        const userr = JSON.parse(userData);
+        setUser(userr);
 
-      fetchUserData();
-    }, [])
+        await dispatch(fetchUser({ _id: item.user._id }));
+        await dispatch(fetchUserPost({ id: item.user._id }));
+        await dispatch(fetchFollows());
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+
+
+  fetchUserData();
+}, [dispatch]);
+useEffect(() => {
+  if (followerData && user) {
+    const filteredFollowers = followerData.filter((itemm: any) =>
+      itemm.followed?._id === user._id && itemm.follower?._id === item.user._id
+    );
+    const filteredFollower = followerData.filter((itemm: any) =>
+      itemm.followed?._id === user._id
+    );
+    const filteredFollowing = followerData.filter((itemm: any) =>
+    itemm.follower?._id === user._id
   );
+    setFollowing(filteredFollowing?.length)
+    setIsFollowing(filteredFollowers.length > 0);
+    setFollower(filteredFollower?.length)
+    
+  }
+}, [followerData, user]);
+const Follow = async () => {
+  const apiUrl = 'http://192.168.100.31:8080/api/user/follow';
+  const userData: any = await AsyncStorage.getItem('user');
+  
+  try {
+    await axios.post(apiUrl, {
+      followed: user._id,
+      follower: item.user._id
+    });
+
+    await dispatch(fetchFollows());
+    
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+};
 
   useEffect(() => {
     if (posts) {
@@ -103,6 +147,32 @@ const ProfileScreen = ({ navigation,route }: any) => {
           </Text>
         </View>
       </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ alignItems: 'center' }}>
+       <View style={{flexDirection:"row",gap:20,top:10,marginBottom:20}}>
+        {
+            isFollowing ? 
+         <TouchableOpacity onPress={Follow} style={{width:80,height:40,borderRadius:15,alignItems:"center",justifyContent:"center",borderColor:"gray",borderWidth:0.5}}>
+            <Text style={{color:"white"}}>
+                Followed
+            </Text>
+          </TouchableOpacity>
+          :
+          
+          <TouchableOpacity onPress={Follow} style={{width:80,backgroundColor:"#0C77E9",height:40,borderRadius:15,alignItems:"center",justifyContent:"center"}}>
+          <Text style={{color:"white"}}>
+              Follow
+          </Text>
+        </TouchableOpacity>
+        }
+          <TouchableOpacity style={{width:80,height:40,borderRadius:15,alignItems:"center",justifyContent:"center",borderColor:"gray",borderWidth:0.5}}>
+            <Text style={{color:"white"}}>
+                Message
+            </Text>
+          </TouchableOpacity>
+       </View>
+        </View>
+      </View>
       <View>
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
           <View style={{ alignItems: "center" }}>
@@ -111,12 +181,12 @@ const ProfileScreen = ({ navigation,route }: any) => {
           </View>
           <View style={{ alignItems: "center", left: screenWidth * 0.04 }}>
             <Text style={{ fontSize: 20, color: "white" }}>Followers</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Follower}</Text>
           </View>
 
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 20, color: "white" }}>Following</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Following}</Text>
           </View>
         </View>
         <View style={{ backgroundColor: "gray", width: screenWidth, height: 2, marginTop: screenHeight / 30 }}>

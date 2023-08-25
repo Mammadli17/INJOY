@@ -9,6 +9,7 @@ const CheckOnbording = ({ navigation }: any) => {
     checkOnboardingStatus();
   }, []);
 // AsyncStorage.clear()
+
   const checkOnboardingStatus = async () => {
     try {
       const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted');

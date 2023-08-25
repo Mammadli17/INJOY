@@ -7,6 +7,7 @@ import { Post } from "./slices/PostSlice";
 import { postReducer } from "./slices/UserPost";
 import { Like } from "./slices/Like";
 import { Comment } from "./slices/Comment";
+import { Follow } from "./slices/Follow";
 
 
 export const store = configureStore({
@@ -18,7 +19,8 @@ export const store = configureStore({
     AllPost: Post,
     UserPost: postReducer,
     AllLikes: Like,
-    AllComment: Comment
+    AllComment: Comment,
+    AllFollows:Follow
 
   },
 });

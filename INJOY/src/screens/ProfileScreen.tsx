@@ -24,6 +24,7 @@ import { fetchUserPost } from '../redux/slices/UserPost';
 import { FlatList } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
 import Settings from '../assets/Svgs/Settings';
+import { fetchFollows } from '../redux/slices/Follow';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -41,7 +42,9 @@ const ProfileScreen = ({ navigation }: any) => {
   const [showButton, setShowButton] = useState(false);
   const [filteredPosts, setfilteredPosts] = useState([])
   const posts = useSelector((state: any) => state.UserPost.data);
-
+  const followerData = useSelector((state: any) => state.AllFollows.data);
+  const [Follower, setFollower] = useState<any>();
+  const [Following, setFollowing] = useState<any>();
   useFocusEffect(
     React.useCallback(() => {
       const fetchUserData = async () => {
@@ -52,6 +55,7 @@ const ProfileScreen = ({ navigation }: any) => {
             setuser(userr);
             await dispatch(fetchUser({ _id: userr._id }));
             await dispatch(fetchUserPost({ id: userr._id }));
+            await dispatch(fetchFollows());
           }
         } catch (error) {
         }
@@ -60,7 +64,20 @@ const ProfileScreen = ({ navigation }: any) => {
       fetchUserData();
     }, [])
   );
-
+  useEffect(() => {
+    if (followerData && user) {
+      const filteredFollower = followerData.filter((itemm: any) =>
+        itemm.followed?._id === user._id
+      );
+      const filteredFollowing = followerData.filter((itemm: any) =>
+      itemm.follower?._id === user._id
+    );
+      setFollowing(filteredFollowing?.length)
+  
+      setFollower(filteredFollower?.length)
+      
+    }
+  }, [followerData, user]);
   useEffect(() => {
     if (posts) {
       const filteredPosts = posts.filter((post: any) => post.image);
@@ -215,12 +232,12 @@ const ProfileScreen = ({ navigation }: any) => {
           </View>
           <View style={{ alignItems: "center", left: screenWidth * 0.04 }}>
             <Text style={{ fontSize: 20, color: "white" }}>Followers</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Following}</Text>
           </View>
 
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 20, color: "white" }}>Following</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>19</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Follower}</Text>
           </View>
         </View>
         <View style={{ backgroundColor: "gray", width: screenWidth, height: 2, marginTop: screenHeight / 30 }}>
