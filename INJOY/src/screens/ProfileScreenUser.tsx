@@ -24,7 +24,7 @@ import { fetchFollows } from '../redux/slices/Follow';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const ProfileScreen = ({ navigation,route }: any) => {
+const ProfileScreenUser = ({ navigation,route }: any) => {
   const { item } = route.params;    
   const dispatch: AppDispatch = useDispatch();
   const [filteredPosts, setfilteredPosts] = useState([])
@@ -43,8 +43,8 @@ const ProfileScreen = ({ navigation,route }: any) => {
         const userr = JSON.parse(userData);
         setUser(userr);
 
-        await dispatch(fetchUser({ _id: item.user ? item.user._id : item._id }));
-        await dispatch(fetchUserPost({ id: item.user._id }));
+        await dispatch(fetchUser({ _id: item? item._id : item._id }));
+        await dispatch(fetchUserPost({ id: item._id }));
         await dispatch(fetchFollows());
       }
     } catch (error) {
@@ -59,7 +59,7 @@ const ProfileScreen = ({ navigation,route }: any) => {
 useEffect(() => {
   if (followerData && user) {
     const filteredFollowers = followerData.filter((itemm: any) =>
-      itemm.followed?._id === user._id && itemm.follower?._id === item.user._id
+      itemm.followed?._id === user._id && itemm.follower?._id === item._id
     );
     const filteredFollower = followerData.filter((itemm: any) =>
       itemm.followed?._id === user._id
@@ -80,7 +80,7 @@ const Follow = async () => {
   try {
     await axios.post(apiUrl, {
       followed: user._id,
-      follower: item.user._id
+      follower: item._id
     });
 
     await dispatch(fetchFollows());
@@ -116,10 +116,10 @@ const Follow = async () => {
       />
      
       <View style={styles.imageContainer}>
-        {item?.user.profilepicture ? (
+        {item?.profilepicture ? (
          
             <Image
-              source={{ uri: item?.user.profilepicture }}
+              source={{ uri: item?.profilepicture }}
               style={styles.image}
               resizeMode="cover"
             />
@@ -136,14 +136,14 @@ const Follow = async () => {
 
       <View style={{ marginTop: '16%' }}>
         <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>
-          {item?.user.FullName}
+          {item?.FullName}
         </Text>
       </View>
 
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 16, color: "gray", marginBottom:10,top:10}}>
-         { item.user?.bio ? item.user.bio : "Hey I am using INJOY!" }
+         { item?.bio ? item.bio : "Hey I am using INJOY!" }
           </Text>
         </View>
       </View>
@@ -250,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default ProfileScreenUser;

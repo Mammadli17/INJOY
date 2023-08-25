@@ -81,7 +81,7 @@ const userController = {
         User.findOne({ email: req.body.email?.toLowerCase(), password: req.body.password })
             .then(data => {
                 if (data) {
-                    var randomCode = Math.floor(Math.random() * 10000);
+                    var randomCode = Math.floor((Math.random() * 1000) + 1000)
                     data.code = randomCode;
 
 
@@ -356,24 +356,33 @@ const userController = {
                 const follow = new Follow({ follower, followed });
                 await follow.save();
                 res.status(201).json({ message: 'Takip başarılı bir şekilde oluşturuldu.' });
-            } 
+            }
         } catch (error) {
             res.status(500).json({ error: 'Takip silinirken bir hata oluştu.' });
         }
     },
-    getAllFollowers : async(req,res) =>{
+    getAllFollowers: async (req, res) => {
         try {
-          
+
             const allFollows = await Follow.find()
-            .populate("follower") 
-            .populate("followed")
-            .exec();
+                .populate("follower")
+                .populate("followed")
+                .exec();
             res.status(200).json(allFollows);
         } catch (error) {
             res.status(500).json({ error: 'Takip kayıtları getirilirken bir hata oluştu.' });
         }
+    },  getAllUsers : async(req,res) =>{
+        try {
+          
+            const allUsers= await User.find()
+            
+            res.status(200).json(allUsers);
+        } catch (error) {
+            res.status(500).json({ error: 'Takip kayıtları getirilirken bir hata oluştu.' });
+        }
     }
-      
+
 
 
 }

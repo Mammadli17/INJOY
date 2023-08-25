@@ -203,6 +203,9 @@ const Main = ({ navigation }: any) => {
               </View>
             </View>
             : <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0 }}>
+             <TouchableOpacity onPress={()=>Func(item)}>
+
+            
               <View >
                 <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
                   <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
@@ -241,6 +244,7 @@ const Main = ({ navigation }: any) => {
                   <Text style={styles.postTitle}>{item.title}</Text>
                 </View>
               </View>
+              </TouchableOpacity>
               <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 12 }}>
                 <View style={{ flexDirection: "row", gap: screenWidth / 10 }}>
                   <View style={{ flexDirection: "row", gap: screenWidth / 40 }}>

@@ -19,6 +19,7 @@ userRoutes.post('/follow', userController.follow)
 userRoutes.get('/getAllLikes', userController.getAllLikes)
 userRoutes.get('/getAllComments', userController.getAllComments)
 userRoutes.get('/getAllFollowers', userController.getAllFollowers)
+userRoutes.get('/getAllUsers', userController.getAllUsers)
 
 
 

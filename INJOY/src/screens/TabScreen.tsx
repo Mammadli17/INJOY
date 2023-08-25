@@ -10,6 +10,7 @@ import Notf from '../assets/Svgs/Notf';
 import ProfileScreen from './ProfileScreen';
 import ProfileMain from '../assets/Svgs/ProfileMain';
 import Search from '../assets/Svgs/Search';
+import SearchScreen from './SearchScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const TabScreen = () => {
 
           if (route.name === 'Main') {
             iconComponent = <Home size={size} fill={focused ? '#0677E8' : color} />;
-          } else if (route.name === 'Chat') {
+          } else if (route.name === 'SearchScreen') {
             iconComponent = <Search size={size} fill={focused ? '#0677E8' : color} />;
           } else if (route.name === 'Post') {
             iconComponent = <Post size={size} fill={focused ? '#0677E8' : color} />;
@@ -43,7 +44,7 @@ const TabScreen = () => {
       })}
     >
       <Tab.Screen name="Main" component={Main} />
-      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="SearchScreen" component={SearchScreen} />
       <Tab.Screen name="Post" component={AddPost} />
       <Tab.Screen name="notf" component={Notfication} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
