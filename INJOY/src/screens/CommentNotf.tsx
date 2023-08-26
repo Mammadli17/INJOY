@@ -11,18 +11,19 @@ const Liked = () => {
     const [userr, setuserr] = useState<any>()
     const [data, setdata] = useState<any>()   
 
-    const fetchUserData = async () => {
-      await dispatch(fetchComments());
-      const userData = await AsyncStorage.getItem('user');
-      const userr = JSON.parse(userData);
-      setuserr(userr);
-
-      const filtered = likes.filter((item) => item.auth._id === userr._id);
-      setdata(filtered);
-  };
+   
 
   useFocusEffect(
       React.useCallback(() => {
+        const fetchUserData = async () => {
+          await dispatch(fetchComments());
+          const userData :any = await AsyncStorage.getItem('user');
+          const userr :any = JSON.parse(userData );
+          setuserr(userr);
+    
+          const filtered = likes.filter((item:any) => item.auth._id === userr._id);
+          setdata(filtered);
+      };
           fetchUserData();
       }, [])
   );
