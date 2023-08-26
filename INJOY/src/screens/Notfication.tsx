@@ -1,27 +1,68 @@
-import { View, Text, SafeAreaView, Button } from 'react-native'
+import { View, Text, SafeAreaView, Button,TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-
+import Notf from '../assets/Svgs/Notf';
+import Like from '../assets/Svgs/Like';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { signout } from '../redux/slices/loginSliceC';
-import Home from '../assets/Svgs/Home';
+import Commit from '../assets/Svgs/Commit';
+import Connect from '../assets/Svgs/Connect';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Liked from './Liked';
+import Connection from './Connection';
+import CommentNotf from './CommentNotf';
+import Backk from '../assets/Svgs/Backk';
 
-const Notfication = ({navigation}:any) => {
+const Tab = createMaterialTopTabNavigator();
+const Notfication = ({ navigation }: any) => {
 
-  let dispatch = useDispatch();
+  return (
+   <View style={{flex:1, backgroundColor: '#131621'}}>
+       <View style={{ marginTop: 20, left: 10, flexDirection: "row", gap: 20, alignItems: "center"}}>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+          <Backk />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 25, color: "white" }}>
+          Notifications
+        </Text>
+      </View>
+     <View style={{ backgroundColor:'#131621',top:20,flex:1 }}>
+      <Tab.Navigator
+       screenOptions={({ route }) => ({
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          height: 60,
+          backgroundColor: '#131620',
+          marginHorizontal:10,
+          overflow:"scroll",
+          
+          
+        },
+        tabBarIcon: ({ color, focused }) => {
+          let iconComponent;
 
-  const signoutApp = () => {
-    AsyncStorage.removeItem("token")
-      .then(res => {
-        dispatch(signout())
-        navigation.navigate("CheckToken")
-  })
-}
-return (
-  <View style={{backgroundColor:'#131621',flex:1}}>
-        <Button title='cix ' onPress={signoutApp}/>
-  </View>
-)
+          if (route.name === 'Liked') {
+            
+            iconComponent = <Like  fill={focused ? '#0677E8' : "white"} />;
+          } else if (route.name === 'CommentNotf') {
+            iconComponent = <Commit  fill={focused ? '#0677E8' : "white"} />;
+          } else if (route.name === 'Connection') {
+            iconComponent = <Connect fill={focused ? '#0677E8' : "white"} />;
+          }
+
+          return iconComponent;
+        },
+        headerShown: false,
+        
+      })}
+      
+      >
+        <Tab.Screen name="Liked" component={Liked} />
+        <Tab.Screen name="CommentNotf" component={CommentNotf} />
+        <Tab.Screen name="Connection" component={Connection} />
+      </Tab.Navigator>
+    </View>
+   </View>
+  )
 }
 
 export default Notfication

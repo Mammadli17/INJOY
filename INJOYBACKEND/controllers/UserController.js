@@ -274,6 +274,7 @@ const userController = {
             const likes = await Like.find()
                 .populate("user")
                 .populate("post")
+                .populate("auth")
                 .exec();
 
             res.json(likes);
@@ -316,6 +317,7 @@ const userController = {
             const Comments = await Comment.find()
                 .populate("user")
                 .populate("post")
+                .populate("auth")
                 .exec();
 
             res.json(Comments);
