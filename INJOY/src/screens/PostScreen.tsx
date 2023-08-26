@@ -170,7 +170,7 @@ const Main = ({ route }: any) => {
                 {item.user?.FullName}
               </Text>
               <Text style={{ fontSize: 14, color: "gray" }}>
-                          {new Date(item.Date).toLocaleString()} 
+              {new Date(item.Date).toLocaleDateString()}
               </Text>
             </View>
           </View>

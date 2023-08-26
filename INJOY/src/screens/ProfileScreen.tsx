@@ -10,6 +10,7 @@ import {
   Pressable,
   TextInput,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../redux/slices/UserSlice';
@@ -45,6 +46,13 @@ const ProfileScreen = ({ navigation }: any) => {
   const followerData = useSelector((state: any) => state.AllFollows.data);
   const [Follower, setFollower] = useState<any>();
   const [Following, setFollowing] = useState<any>();
+
+
+ 
+
+
+
+
   useFocusEffect(
     React.useCallback(() => {
       const fetchUserData = async () => {
@@ -56,6 +64,8 @@ const ProfileScreen = ({ navigation }: any) => {
             await dispatch(fetchUser({ _id: userr._id }));
             await dispatch(fetchUserPost({ id: userr._id }));
             await dispatch(fetchFollows());
+  
+           
           }
         } catch (error) {
         }
@@ -75,6 +85,7 @@ const ProfileScreen = ({ navigation }: any) => {
       setFollowing(filteredFollowing?.length)
   
       setFollower(filteredFollower?.length)
+      
       
     }
   }, [followerData, user]);
@@ -169,7 +180,7 @@ const ProfileScreen = ({ navigation }: any) => {
         />
       </TouchableOpacity>
     </View>
-  )
+  )  
   return (
     <View style={styles.container}>
       <Image
@@ -353,6 +364,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     gap: 50,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#131621',
   },
 });
 
