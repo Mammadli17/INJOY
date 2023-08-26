@@ -44,8 +44,6 @@ const userController = {
 
     },
     confirmCode: (req, res) => {
-
-
         User.findOne({ email: req.body.email.toLowerCase() })
             .then(data => {
 
