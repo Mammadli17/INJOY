@@ -169,6 +169,9 @@ const Main = ({ route }: any) => {
               <Text style={{ fontSize: 18, color: "white" }}>
                 {item.user?.FullName}
               </Text>
+              <Text style={{ fontSize: 14, color: "gray" }}>
+                          {new Date(item.Date).toLocaleString()} 
+              </Text>
             </View>
           </View>
           <TouchableOpacity onPress={toggleModal}>

@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Postun sahibi olan kullanıcı referansı
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
-    // Diğer post özelliklerini buraya ekleyebilirsiniz.
+    Date: { type: Date, default: Date.now }
 });
 
 const Post = mongoose.model("Post", postSchema);

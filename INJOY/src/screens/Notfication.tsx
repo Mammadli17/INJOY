@@ -1,9 +1,6 @@
 import { View, Text, SafeAreaView, Button,TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import Notf from '../assets/Svgs/Notf';
 import Like from '../assets/Svgs/Like';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Commit from '../assets/Svgs/Commit';
 import Connect from '../assets/Svgs/Connect';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -33,28 +30,21 @@ const Notfication = ({ navigation }: any) => {
           height: 60,
           backgroundColor: '#131620',
           marginHorizontal:10,
-          overflow:"scroll",
-          
-          
+          overflow:"scroll",         
         },
         tabBarIcon: ({ color, focused }) => {
           let iconComponent;
-
-          if (route.name === 'Liked') {
-            
+          if (route.name === 'Liked') {         
             iconComponent = <Like  fill={focused ? '#0677E8' : "white"} />;
           } else if (route.name === 'CommentNotf') {
             iconComponent = <Commit  fill={focused ? '#0677E8' : "white"} />;
           } else if (route.name === 'Connection') {
             iconComponent = <Connect fill={focused ? '#0677E8' : "white"} />;
           }
-
           return iconComponent;
         },
-        headerShown: false,
-        
+        headerShown: false,  
       })}
-      
       >
         <Tab.Screen name="Liked" component={Liked} />
         <Tab.Screen name="CommentNotf" component={CommentNotf} />

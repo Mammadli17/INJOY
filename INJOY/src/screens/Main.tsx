@@ -110,12 +110,12 @@ const Main = ({ navigation }: any) => {
 
     }
   }
-  const Func = (item :any) =>{
-      if(item.user._id===userr?._id){
-        navigation.navigate("Profile")
-      }else{
-        navigation.navigate("ProfileUserScreen",{item})
-      }
+  const Func = (item: any) => {
+    if (item.user._id === userr?._id) {
+      navigation.navigate("Profile")
+    } else {
+      navigation.navigate("ProfileUserScreen", { item })
+    }
   }
 
   const renderPost = ({ item }: any) => {
@@ -130,45 +130,48 @@ const Main = ({ navigation }: any) => {
         {
           item.image ?
             <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0 }}>
-              <TouchableOpacity onPress={()=>Func(item)}>
-              <View >
-                <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
-                  <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
-                    <View style={{}}>
-                      {item?.user?.profilepicture ? (
+              <TouchableOpacity onPress={() => Func(item)}>
+                <View >
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
+                    <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
+                      <View style={{}}>
+                        {item?.user?.profilepicture ? (
 
-                        <Image
-                          source={{ uri: item?.user.profilepicture }}
-                          style={styles.image}
-                          resizeMode="cover"
-                        />
+                          <Image
+                            source={{ uri: item?.user.profilepicture }}
+                            style={styles.image}
+                            resizeMode="cover"
+                          />
 
-                      ) : (
+                        ) : (
 
-                        <Image
-                          source={require('../assets/pictures/profile.jpg')}
-                          resizeMode="cover"
-                          style={styles.image}
-                        />
+                          <Image
+                            source={require('../assets/pictures/profile.jpg')}
+                            resizeMode="cover"
+                            style={styles.image}
+                          />
 
-                      )}
+                        )}
 
+                      </View>
+                      <View style={{ left: screenWidth / 20, justifyContent: "center" }}>
+                        <Text style={{ fontSize: 18, color: "white" }}>
+                          {item.user?.FullName}
+                        </Text>
+                        <Text style={{ fontSize: 14, color: "gray" }}>
+                          {new Date(item.Date).toLocaleString()} 
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{ left: screenWidth / 20, justifyContent: "center" }}>
-                      <Text style={{ fontSize: 18, color: "white" }}>
-                        {item.user?.FullName}
-                      </Text>
+                    <View>
+                      <More />
                     </View>
                   </View>
-                  <View>
-                    <More />
+
+                  <View style={{ marginTop: 20, marginEnd: screenWidth / 14 }}>
+                    <Text style={styles.postTitle}>{item.title}</Text>
                   </View>
                 </View>
-
-                <View style={{ marginTop: 20, marginEnd: screenWidth / 14 }}>
-                  <Text style={styles.postTitle}>{item.title}</Text>
-                </View>
-              </View>
               </TouchableOpacity>
               <View style={styles.postContainer}>
                 <Image
@@ -203,47 +206,47 @@ const Main = ({ navigation }: any) => {
               </View>
             </View>
             : <View style={{ gap: 10, marginBottom: screenHeight / 20, borderTopColor: "gray", borderWidth: 1, borderBottomWidth: 0 }}>
-             <TouchableOpacity onPress={()=>Func(item)}>
+              <TouchableOpacity onPress={() => Func(item)}>
 
-            
-              <View >
-                <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
-                  <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
-                    <View style={{}}>
-                      {item?.user?.profilepicture ? (
 
-                        <Image
-                          source={{ uri: item?.user.profilepicture }}
-                          style={styles.image}
-                          resizeMode="cover"
-                        />
+                <View >
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 15 }}>
+                    <View style={{ flexDirection: 'row', left: screenWidth / 12 }}>
+                      <View style={{}}>
+                        {item?.user?.profilepicture ? (
 
-                      ) : (
+                          <Image
+                            source={{ uri: item?.user.profilepicture }}
+                            style={styles.image}
+                            resizeMode="cover"
+                          />
 
-                        <Image
-                          source={require('../assets/pictures/profile.jpg')}
-                          resizeMode="cover"
-                          style={styles.image}
-                        />
+                        ) : (
 
-                      )}
+                          <Image
+                            source={require('../assets/pictures/profile.jpg')}
+                            resizeMode="cover"
+                            style={styles.image}
+                          />
 
+                        )}
+
+                      </View>
+                      <View style={{ left: screenWidth / 20, justifyContent: "center" }}>
+                        <Text style={{ fontSize: 18, color: "white" }}>
+                          {item.user?.FullName}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{ left: screenWidth / 20, justifyContent: "center" }}>
-                      <Text style={{ fontSize: 18, color: "white" }}>
-                        {item.user?.FullName}
-                      </Text>
+                    <View>
+                      <More />
                     </View>
                   </View>
-                  <View>
-                    <More />
+
+                  <View style={{ marginTop: 20, marginEnd: screenWidth / 14 }}>
+                    <Text style={styles.postTitle}>{item.title}</Text>
                   </View>
                 </View>
-
-                <View style={{ marginTop: 20, marginEnd: screenWidth / 14 }}>
-                  <Text style={styles.postTitle}>{item.title}</Text>
-                </View>
-              </View>
               </TouchableOpacity>
               <View style={{ flexDirection: "row", gap: screenWidth / 10, left: screenWidth / 12 }}>
                 <View style={{ flexDirection: "row", gap: screenWidth / 10 }}>
