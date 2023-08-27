@@ -25,7 +25,7 @@ const Liked = () => {
           setdata(filtered);
       };
           fetchUserData();
-      }, [])
+      }, [data,fetchComments])
   );
     const renderUser = ({ item }: any) => {
         return (

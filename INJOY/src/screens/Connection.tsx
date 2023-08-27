@@ -11,9 +11,7 @@ const Liked = () => {
     const likes = useSelector((state: any) => state.AllFollows.data);
     const [userr, setuserr] = useState<any>()
     const [data, setdata] = useState<any>()   
-
-   
-
+  
   useFocusEffect(
       React.useCallback(() => {
         const fetchUserData = async () => {
@@ -22,11 +20,11 @@ const Liked = () => {
           const userr :any = JSON.parse(userData );
           setuserr(userr);
     
-          const filtered = likes.filter((item:any) => item.follower._id === userr._id);
+          const filtered = await likes.filter((item:any) => item.follower._id === userr._id);
           setdata(filtered);
       };
           fetchUserData();
-      }, [])
+      }, [data,fetchFollows])
   );
     const renderUser = ({ item }: any) => {
         return (

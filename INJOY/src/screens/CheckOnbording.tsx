@@ -9,6 +9,7 @@ const CheckOnbording = ({ navigation }: any) => {
     checkOnboardingStatus();
   }, []);
 
+
   
 
   const checkOnboardingStatus = async () => {

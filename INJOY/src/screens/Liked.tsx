@@ -26,9 +26,11 @@ const Liked = () => {
                 setdata(filtered)
             }
             fetchUserData()
-        }, [])
+        }, [data,fetchLikes])
 
     );
+    
+    
     const renderUser = ({ item }: any) => {
         return (
             <View style={{ left: 10 }}>

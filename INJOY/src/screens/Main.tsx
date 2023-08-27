@@ -12,6 +12,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchLikes } from '../redux/slices/Like';
 import { fetchComments } from '../redux/slices/Comment';
+import Story from '../components/Story';
+import Chat1 from '../assets/Svgs/Chat';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const Main = ({ navigation }: any) => {
@@ -280,7 +282,21 @@ const Main = ({ navigation }: any) => {
   };
   return (
     <View style={styles.container}>
-      <View style={{ padding: 60 }}>
+      <View style={{ }}>
+     <View style={{flexDirection:"row",justifyContent:"space-between",top:5}}>
+     <View style={{left:10}}>
+          <Text style={{fontSize:25}}>
+          INJOY
+          </Text>
+        
+        </View>
+        <View style={{right:10}}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
+        <Chat1/>
+        </TouchableOpacity>
+        </View>
+     </View>
+        <Story/>
       </View>
       <FlatList
         data={reversedData}

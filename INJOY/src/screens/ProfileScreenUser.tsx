@@ -62,10 +62,10 @@ useEffect(() => {
       itemm.followed?._id === user._id && itemm.follower?._id === item._id
     );
     const filteredFollower = followerData.filter((itemm: any) =>
-      itemm.followed?._id === user._id
+      itemm.followed?._id === item._id
     );
     const filteredFollowing = followerData.filter((itemm: any) =>
-    itemm.follower?._id === user._id
+    itemm.follower?._id === item._id
   );
     setFollowing(filteredFollowing?.length)
     setIsFollowing(filteredFollowers.length > 0);
@@ -181,12 +181,12 @@ const Follow = async () => {
           </View>
           <View style={{ alignItems: "center", left: screenWidth * 0.04 }}>
             <Text style={{ fontSize: 20, color: "white" }}>Followers</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>{Follower}</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Following}</Text>
           </View>
 
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 20, color: "white" }}>Following</Text>
-            <Text style={{ fontSize: 20, color: "white" }}>{Following}</Text>
+            <Text style={{ fontSize: 20, color: "white" }}>{Follower}</Text>
           </View>
         </View>
         <View style={{ backgroundColor: "gray", width: screenWidth, height: 2, marginTop: screenHeight / 30 }}>
