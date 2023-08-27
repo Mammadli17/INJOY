@@ -10,7 +10,7 @@ import Storyy from '../assets/Svgs/Story';
 import Cancel from '../assets/Svgs/Cancel';
 import StoryCancel from '../assets/Svgs/StoryCancel';
 
-const Story = () => {
+const Story = ({navigation}:any) => {
     const screenWidth = Dimensions.get('window').width;
     const screenHeight = Dimensions.get('window').height;
     const [userr, setuserr] = useState<any>()
@@ -71,9 +71,11 @@ const Story = () => {
                            </TouchableOpacity>
                         </View>
                        <View style={{gap:20,left :20}}>
-                       <Text style={{color:"white",fontSize:20}}>
+                      <TouchableOpacity onPress={()=>navigation.navigate("AddStory")}>
+                      <Text style={{color:"white",fontSize:20}}>
                         Add your story
                        </Text>
+                      </TouchableOpacity>
                        <Text style={{color:"white",fontSize:20}}>
                         View your story
                        </Text>

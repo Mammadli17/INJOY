@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     FullName:String,
     profilepicture: String,
     bio:String,
+    story:String,
     code:String,
     codeCounter: {
         type:Number,

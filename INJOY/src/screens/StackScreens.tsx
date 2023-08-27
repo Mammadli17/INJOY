@@ -15,6 +15,8 @@ import PostScreen from './PostScreen';
 import ProfileUserScreen from './ProfileUserScreen';
 import ProfileScreenUser from './ProfileScreenUser';
 import Chat from './Chat';
+import AddStory from './AddStory';
+import Story from '../components/Story';
 
 const Stack = createStackNavigator();
 
@@ -34,8 +36,9 @@ const StackNav = () => {
       <Stack.Screen name="PostScreen" component={PostScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ProfileUserScreen" component={ProfileUserScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ProfileScreenUser" component={ProfileScreenUser} options={{ headerShown: false }} />
+      <Stack.Screen name="Story" component={Story} options={{ headerShown: false }} />
       <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
-
+      <Stack.Screen name="AddStory" component={AddStory} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
