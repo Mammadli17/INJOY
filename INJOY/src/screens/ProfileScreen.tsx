@@ -89,6 +89,8 @@ const ProfileScreen = ({ navigation }: any) => {
       
     }
   }, [followerData, user]);
+  
+  
   useEffect(() => {
     if (posts) {
       const filteredPosts = posts.filter((post: any) => post.image);

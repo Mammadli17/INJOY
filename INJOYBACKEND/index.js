@@ -156,10 +156,12 @@ app.post("/token", (req,res) => {
   }
 })
 app.post('/api/story', async (req, res) => {
+ 
   if (!req.files || !req.files.story) {
     res.status(400).send('No file uploaded.');
     return;
   }
+
 
   const extName = path.extname(req.files.story.name);
   const targetDir = path.join(__dirname, 'images');
@@ -167,6 +169,7 @@ app.post('/api/story', async (req, res) => {
     fs.mkdirSync(targetDir);
   }
   if (extName == ".jpeg" || extName == ".jpg" || extName == ".png") {
+
     const newFileName = uuidv4() + extName;
     req.files.story.mv(path.join(targetDir, newFileName), async (err) => {
       if (err) {

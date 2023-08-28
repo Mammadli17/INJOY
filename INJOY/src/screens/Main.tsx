@@ -288,7 +288,6 @@ const Main = ({ navigation }: any) => {
           <Text style={{fontSize:25}}>
           INJOY
           </Text>
-        
         </View>
         <View style={{right:10}}>
         <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
@@ -296,7 +295,7 @@ const Main = ({ navigation }: any) => {
         </TouchableOpacity>
         </View>
      </View>
-        <Story/>
+        <Story navigation={navigation}/>
       </View>
       <FlatList
         data={reversedData}
