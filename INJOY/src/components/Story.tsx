@@ -21,6 +21,7 @@ const Story = ({ navigation }: any) => {
     const [ModalVisible, setModalVisible] = useState<any>(false)
     const [ModalVisible1, setModalVisible1] = useState<any>(false)
     const [ModalVisible2, setModalVisible2] = useState<any>(false)
+    const [ModalVisible3, setModalVisible3] = useState<any>(false)
     const data = useSelector((state: any) => state.AllUsers.data, shallowEqual);
     const [story, setstory] = useState<any>()
     const dispatch: AppDispatch = useDispatch();
@@ -43,13 +44,14 @@ const Story = ({ navigation }: any) => {
             duration: 300,
             useNativeDriver: false,
         }).start(() => {
-            setModalVisible2(false); // Close the modal after animation
+            setModalVisible2(false);
+            setModalVisible3(false); // Close the modal after animation
         });
     };
 
     // Show the modal and start the animation when needed
     useEffect(() => {
-        if (ModalVisible2) {
+        if (ModalVisible2 || ModalVisible3) {
             slideIn();
             Animated.timing(fillAnimation, {
                 toValue: 1,
@@ -61,7 +63,7 @@ const Story = ({ navigation }: any) => {
         } else {
             fillAnimation.setValue(0); // Reset the progress when the modal is closed
         }
-    }, [ModalVisible2]);
+    }, [ModalVisible2,ModalVisible3]);
 
     useEffect(() => {
         dispatch(fetchUsers())
@@ -129,10 +131,16 @@ const Story = ({ navigation }: any) => {
         setModalVisible(false)
     }
 
-    const render = ({ item }: any) => {
+    const render = ({item} :any) => {
         return (
 
 
+        <>
+
+        {
+            item.story ?
+            <View>
+            <TouchableOpacity onPress={()=>setModalVisible3(true)}>
             <View style={{marginLeft:20,alignItems:"center"}}>
                 <Image
                     source={user && user && user.profilepicture ? { uri: item.profilepicture } : require('../assets/pictures/profile.jpg')}
@@ -143,6 +151,39 @@ const Story = ({ navigation }: any) => {
                     {item.FullName}
                 </Text>
             </View>
+            </TouchableOpacity>
+            <Modal
+                visible={ModalVisible3}
+                onRequestClose={() => setModalVisible3(false)}
+            >
+                <View style={styles.modalContainer}>
+                    
+                        <Image
+                        source={{ uri: item?.story }}
+                        style={{ width: screenWidth, height: screenHeight }}
+                        resizeMode="cover"
+                    />
+                    
+                    <View style={styles.progressContainer}>
+                        <Animated.View
+                            style={[
+                                styles.progressBar,
+                                {
+                                    width: fillAnimation.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: ['0%', '100%'],
+                                    })
+                                }
+                            ]}
+                        />
+                    </View>
+                </View>
+            </Modal>
+           </View>
+           :
+           null
+        }
+        </>
         )
     }
     const handleImageUpload = () => {
