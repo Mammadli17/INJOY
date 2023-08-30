@@ -194,62 +194,63 @@ app.post("/token", (req,res) => {
 //     res.status(500).send("Ext error");
 //   }
 // });
-// app.post('/api/story', async (req, res) => {
-//   const { _id } = req.body;
-//   User.findById(_id)
-//       .then(user => {
+app.post('/api/story', async (req, res) => {
+  const { _id } = req.body;
+  User.findById(_id)
+      .then(user => {
         
         
-//           if (!user) {
-//               return res.status(404).json({ message: "User not found" });
-//           }
+          if (!user) {
+              return res.status(404).json({ message: "User not found" });
+          }
       
-//               // (req.files.postImg.name);
-//           // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
-//           if (req.files && req.files.image) {
+              // (req.files.postImg.name);
+          // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
+          if (req.files && req.files.image) {
             
              
-//               const extName = path.extname(req.files.image.name);
-//               const targetDir = path.join(__dirname, 'images');
+              const extName = path.extname(req.files.image.name);
+              const targetDir = path.join(__dirname, 'images');
                     
-//               if (!fs.existsSync(targetDir)) {
-//                   fs.mkdirSync(targetDir);
-//               }
+              if (!fs.existsSync(targetDir)) {
+                  fs.mkdirSync(targetDir);
+              }
               
-//               if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
-//                   const newFileName = uuidv4() + extName;
-//                   req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
-//                       if (err) {
-//                           console.error('Error saving image:', err);
-//                           res.status(500).send('Server Error');
-//                       } else {
-//                           const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
+              if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
+                  const newFileName = uuidv4() + extName;
+                  req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
+                      if (err) {
+                          console.error('Error saving image:', err);
+                          res.status(500).send('Server Error');
+                      } else {
+                          const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
                           
-//                           const story = new Story({
+                          const story = new Story({
                              
-//                               user: _id,
-//                               image: profilePictureURI 
-//                           });
+                              user: _id,
+                              image: profilePictureURI 
+                          });
 
-//                           // Gönderiyi veritabanına kaydedelim.
-//                           story.save()
-//                               .then(savedPost => {
-//                                   res.json(savedPost);
-//                               })
-//                               .catch(err => {
-//                                   res.status(500).json({ message: "Failed to save the post", error: err });
-//                               });
-//                       }
-//                   });
-//               } else {
-//                   res.status(500).send("Ext error");
-//               }
-//           }
-//       })
-//       .catch(err => {
-//           res.status(500).json({ message: "Mongo error!", error: err });
-//       });
-// })
+                          // Gönderiyi veritabanına kaydedelim.
+                          story.save()
+                              .then(savedPost => {
+                                  res.json(savedPost);
+                              })
+                              .catch(err => {
+                                  res.status(500).json({ message: "Failed to save the post", error: err });
+                              });
+                      }
+                  });
+              } else {
+                  res.status(500).send("Ext error");
+              }
+          }
+      })
+      .catch(err => {
+          res.status(500).json({ message: "Mongo error!", error: err });
+      });
+})
+
 
 app.get('/', (req, res) => {
   res.send('OK');

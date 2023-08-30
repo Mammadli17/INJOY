@@ -9,6 +9,7 @@ import { Like } from "./slices/Like";
 import { Comment } from "./slices/Comment";
 import { Follow } from "./slices/Follow";
 import { Users } from "./slices/User";
+import { Story } from "./slices/Story";
 
 
 export const store = configureStore({
@@ -22,7 +23,8 @@ export const store = configureStore({
     AllLikes: Like,
     AllComment: Comment,
     AllFollows:Follow,
-    AllUsers:Users
+    AllUsers:Users,
+    AllStory:Story
 
   },
 });

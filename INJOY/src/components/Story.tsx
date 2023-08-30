@@ -5,13 +5,13 @@ import { AppDispatch } from '../redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { fetchUsers } from '../redux/slices/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Post from '../assets/Svgs/Post';
 import Storyy from '../assets/Svgs/Story';
 import Cancel from '../assets/Svgs/Cancel';
 import StoryCancel from '../assets/Svgs/StoryCancel';
 import { launchImageLibrary, launchCamera } from 'react-native-image-picker';
 import Done from '../assets/Svgs/Done';
 import axios from 'axios';
+import { fetchStory } from '../redux/slices/Story';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const Story = ({ navigation }: any) => {
@@ -22,7 +22,11 @@ const Story = ({ navigation }: any) => {
     const [ModalVisible1, setModalVisible1] = useState<any>(false)
     const [ModalVisible2, setModalVisible2] = useState<any>(false)
     const [ModalVisible3, setModalVisible3] = useState<any>(false)
+    const data1 = useSelector((state: any) => state.AllStory.data, shallowEqual);
     const data = useSelector((state: any) => state.AllUsers.data, shallowEqual);
+
+    const [yourstory, setyourstory] = useState<any>()
+    
     const [story, setstory] = useState<any>()
     const dispatch: AppDispatch = useDispatch();
     const fillAnimation = new Animated.Value(0);
@@ -37,7 +41,7 @@ const Story = ({ navigation }: any) => {
         }).start();
     };
 
-    // Function to handle slide-out animation
+    // storisin 3  sanie gozleme yeri da/
     const slideOut = () => {
         Animated.timing(slideInAnimation, {
             toValue: -screenWidth,
@@ -45,11 +49,9 @@ const Story = ({ navigation }: any) => {
             useNativeDriver: false,
         }).start(() => {
             setModalVisible2(false);
-            setModalVisible3(false); // Close the modal after animation
+            setModalVisible3(false); 
         });
     };
-
-    // Show the modal and start the animation when needed
     useEffect(() => {
         if (ModalVisible2 || ModalVisible3) {
             slideIn();
@@ -67,6 +69,7 @@ const Story = ({ navigation }: any) => {
 
     useEffect(() => {
         dispatch(fetchUsers())
+        dispatch(fetchStory())
             .then(() => {
                 setDataFetched(true);
             })
@@ -76,22 +79,31 @@ const Story = ({ navigation }: any) => {
 
         fetchUserData();
     }, [dispatch]);
+  
+
+    console.log();
+    
 
     useEffect(() => {
         if (dataFetched && data.length > 0) {
             const filteredFollower = data.find((itemm: any) => itemm._id === userr._id);
             setuser(filteredFollower);
-            const store = data.filter((itemm: any) => itemm._id != userr._id);
+            const store = data1.filter((itemm: any) => itemm.user._id != userr._id);
+            const yours = data1.filter((itemm: any) => itemm.user._id === userr._id);
+          console.log("jkjkjk",data1);
+          
+            setyourstory(yours)
             setstory(store)
-
             setuser(filteredFollower);
         }
-    }, [data, dataFetched, userr]);
+    }, [data, dataFetched, userr,data1]);
     useEffect(() => {
+        dispatch(fetchStory());
         dispatch(fetchUsers());
         fetchUserData();
     }, [dispatch,]);
-
+   console.log("ssa");
+   
     const fetchUserData = async () => {
         const userData: any = await AsyncStorage.getItem('user');
         const userr = JSON.parse(userData);
@@ -99,18 +111,18 @@ const Story = ({ navigation }: any) => {
 
         const filteredFollower = data.find((itemm: any) => itemm._id === userr._id);
         setuser(filteredFollower);
-        const store = data.filter((itemm: any) => itemm._id != userr._id);
-        setstory(store)
+       
     };
 
     useFocusEffect(
         React.useCallback(() => {
             dispatch(fetchUsers());
+            dispatch(fetchStory());
             fetchUserData();
         }, [dispatch])
     );
 
-    console.log(story);
+  
 
     const handleImageSelect = () => {
         launchImageLibrary(
@@ -130,7 +142,10 @@ const Story = ({ navigation }: any) => {
         setModalVisible2(true)
         setModalVisible(false)
     }
+ 
 
+  console.log(yourstory);
+  
     const render = ({item} :any) => {
         return (
 
@@ -211,6 +226,7 @@ const Story = ({ navigation }: any) => {
                 
                 setModalVisible1(false)
                 dispatch(fetchUsers())
+                dispatch(fetchStory())
             })
             .catch((error) => {
               console.log("salam error  var ");
@@ -222,6 +238,7 @@ const Story = ({ navigation }: any) => {
             });
 
     };
+
 
 
     return (
@@ -311,12 +328,13 @@ const Story = ({ navigation }: any) => {
             >
                 <View style={styles.modalContainer}>
                     {
-                        user?.story ?
-                        <Image
-                        source={{ uri: user?.story }}
-                        style={{ width: screenWidth, height: screenHeight }}
-                        resizeMode="cover"
+                  yourstory && yourstory.length > 0 ? (
+                    <Image
+                      source={{ uri: yourstory[0].image }}
+                      style={{ width: screenWidth, height: screenHeight }}
+                      resizeMode="cover"
                     />
+                  )
                     :
                     <View>
                         <Text style={{color:"gray",fontSize:40}}>
