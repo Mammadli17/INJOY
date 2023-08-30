@@ -187,18 +187,19 @@ const Story = ({ navigation }: any) => {
         )
     }
     const handleImageUpload = () => {
-
+   
+    
         if (!newImage || !newImage.assets || newImage.assets.length === 0) {
             return;
         }
-
+     
         const formData = new FormData();
-        formData.append('story', {
+        formData.append('image', {
             uri: newImage.assets[0].uri,
             name: newImage.assets[0].fileName,
             type: newImage.assets[0].type,
-        });
-        formData.append('userId', userr._id);
+        });        
+        formData.append('_id', userr._id);
         axios
             .post('http://192.168.100.31:8080/api/story', formData, {
                 headers: {
@@ -206,11 +207,14 @@ const Story = ({ navigation }: any) => {
                 },
             })
             .then(() => {
+                console.log("okkk");
+                
                 setModalVisible1(false)
                 dispatch(fetchUsers())
             })
             .catch((error) => {
-
+              console.log("salam error  var ");
+              
             })
             .finally(() => {
 

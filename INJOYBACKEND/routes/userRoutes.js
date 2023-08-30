@@ -20,6 +20,7 @@ userRoutes.get('/getAllLikes', userController.getAllLikes)
 userRoutes.get('/getAllComments', userController.getAllComments)
 userRoutes.get('/getAllFollowers', userController.getAllFollowers)
 userRoutes.get('/getAllUsers', userController.getAllUsers)
+userRoutes.get('/getAllStory', userController.getAllStory)
 
 
 

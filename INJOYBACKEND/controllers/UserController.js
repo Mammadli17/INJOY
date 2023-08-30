@@ -11,6 +11,8 @@ const { Post } = require("../models/Post");
 const { Like } = require("../models/Like");
 const { Comment } = require("../models/Comment");
 const { Follow } = require("../models/Follow");
+const { Story } = require("../models/Story");
+
 const userController = {
 
 
@@ -381,7 +383,17 @@ const userController = {
         } catch (error) {
             res.status(500).json({ error: 'Takip kayıtları getirilirken bir hata oluştu.' });
         }
-    }
+    } ,getAllStory: (req, res) => {
+       
+        Story.find()
+            .populate("user") 
+            .then(posts => {
+                res.json(posts);
+            })
+            .catch(err => {
+                res.status(500).json({ message: "Gönderileri alırken hata oluştu", error: err });
+            });
+    },
 
 
 

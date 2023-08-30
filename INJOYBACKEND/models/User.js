@@ -7,7 +7,10 @@ const userSchema = new mongoose.Schema({
     FullName:String,
     profilepicture: String,
     bio:String,
-    story:String,
+    story:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Story'
+    }],
     code:String,
     codeCounter: {
         type:Number,
