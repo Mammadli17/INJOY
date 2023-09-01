@@ -119,15 +119,18 @@ const Story = ({ navigation }: any) => {
     const userData: any = await AsyncStorage.getItem('user');
     const userr = JSON.parse(userData);
     setuserr(userr);
+    
     const yours = data1.filter((itemm: any) => itemm.user._id === userr._id);
     setyourstory(yours);
+    console.log(yours);
+    
     const filteredFollower = data.find((itemm: any) => itemm._id === userr._id);
     setuser(filteredFollower);
-    const border = yourstory?.find((itemm: any) => itemm.user._id === userr._id);
-    console.log(border,"men geldim");
-    
+    const border = yourstory?.find((itemm: any) => itemm.user._id === userr._id);    
     const borderColor = border?.users?.find((itemm: any) => itemm === userr._id);
     setBorderColor(borderColor);
+    console.log(story,"s");
+    
   };
 
   useFocusEffect(
@@ -177,63 +180,95 @@ const Story = ({ navigation }: any) => {
       await dispatch(fetchStory());
       fetchUserData();
   };
+  const Funcc = async (item:any) => {
+   setModalVisible3(true)
+   await new Promise((resolve) => setTimeout(resolve, 4000));
+  
+   const a = {
+     userId: userr._id,
+     storyId:item._id,
+   };
+ 
+  await axios
+     .post('http://192.168.100.31:8080/api/user/userAdd', a)
+     .then((response) => {
+       console.log(response.data);
+       
+     })
+     .catch((error) => {
+       console.error(error);
+     });
 
-  const render = ({ item }: any) => (
-    <>
-      {item.image ? (
-        <View>
-          <TouchableOpacity onPress={() => setModalVisible3(true)}>
-            <View style={{ marginLeft: 20, alignItems: 'center' }}>
-              <Image
-                source={
-                  user && user && user.profilepicture
-                    ? { uri: item.user.profilepicture }
-                    : require('../assets/pictures/profile.jpg')
-                }
-                style={{ height: 70, width: 70, borderRadius: 100 }}
-                resizeMode="cover"
-              />
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 12,
-                  alignItems: 'center',
-                  top: 3,
-                }}
-              >
-                {item.user.FullName}
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <Modal
-            visible={ModalVisible3}
-            onRequestClose={() => setModalVisible3(false)}
-          >
-            <View style={styles.modalContainer}>
-              <Image
-                source={{ uri: item?.image }}
-                style={{ width: screenWidth, height: screenHeight }}
-                resizeMode="cover"
-              />
-              <View style={styles.progressContainer}>
-                <Animated.View
-                  style={[
-                    styles.progressBar,
-                    {
-                      width: fillAnimation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0%', '100%'],
-                      }),
-                    },
-                  ]}
+     await dispatch(fetchUsers());
+     await dispatch(fetchStory());
+     fetchUserData();
+   
+   
+  }
+ 
+  const render = ({ item }: any) => {
+    // Örnek bir filtreleme koşulu: Kullanıcıların yaşları 30'dan büyükse
+    const filteredUsers = item.users.filter((item :any) => item===userr._id);
+    console.log(filteredUsers);
+    
+    return (
+      <>
+        {item.image ? (
+          <View>
+            <TouchableOpacity onPress={() => Funcc(item)}>
+              <View style={{ marginLeft: 20, alignItems: 'center' }}>
+                <Image
+                  source={
+                    user && user && user.profilepicture
+                      ? { uri: item.user.profilepicture }
+                      : require('../assets/pictures/profile.jpg')
+                  }
+                  style={[{ height: 70, width: 70, borderRadius: 100 },filteredUsers && filteredUsers.length > 0  ? null :{borderWidth:2,borderColor:"#0677E8"}]}
+                  resizeMode="cover"
                 />
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 12,
+                    alignItems: 'center',
+                    top: 3,
+                  }}
+                >
+                  {item.user.FullName}
+                </Text>
               </View>
-            </View>
-          </Modal>
-        </View>
-      ) : null}
-    </>
-  );
+            </TouchableOpacity>
+            <Modal
+              visible={ModalVisible3}
+              onRequestClose={() => setModalVisible3(false)}
+            >
+              <View style={styles.modalContainer}>
+                <Image
+                  source={{ uri: item?.image }}
+                  style={{ width: screenWidth, height: screenHeight }}
+                  resizeMode="cover"
+                />
+                <View style={styles.progressContainer}>
+                  <Animated.View
+                    style={[
+                      styles.progressBar,
+                      {
+                        width: fillAnimation.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['0%', '100%'],
+                        }),
+                      },
+                    ]}
+                  />
+                </View>
+              </View>
+            </Modal>
+          </View>
+        ) : null}
+      </>
+    );
+  };
+  
   console.log(BorderColor);
   const handleImageUpload = async () => {
     if (!newImage || !newImage.assets || newImage.assets.length === 0) {
@@ -270,6 +305,7 @@ const Story = ({ navigation }: any) => {
         
   };
 
+
   return (
     <View style={{ height: screenHeight * 0.14, top: 10, flexDirection: 'row' }}>
       <View style={{ top: 5, left: 10, flexDirection: 'row' }}>
@@ -283,7 +319,11 @@ const Story = ({ navigation }: any) => {
               }
               style={[
                 { height: 70, width: 70, borderRadius: 100 },
-                BorderColor ? null : { borderColor: '#0677E8', borderWidth: 2 },
+                yourstory && yourstory.length > 0
+                  ? BorderColor
+                    ? null // Eğer 'BorderColor' true ise hiçbir şey eklemeyin
+                    : { borderColor: '#0677E8', borderWidth: 2 } // 'BorderColor' false ise sınıra renk ve genişlik ekleyin
+                  : null // 'yourstory' boşsa veya uzunluğu 0 ise hiçbir şey eklemeyin
               ]}
               resizeMode="cover"
             />
@@ -424,6 +464,7 @@ const styles = StyleSheet.create({
     width: screenWidth / 3,
     height: screenWidth / 3,
   },
+  
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
