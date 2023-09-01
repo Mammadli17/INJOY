@@ -12,6 +12,7 @@ const { Like } = require("../models/Like");
 const { Comment } = require("../models/Comment");
 const { Follow } = require("../models/Follow");
 const { Story } = require("../models/Story");
+const { log } = require("console");
 
 const userController = {
 
@@ -393,7 +394,42 @@ const userController = {
             .catch(err => {
                 res.status(500).json({ message: "Gönderileri alırken hata oluştu", error: err });
             });
+    }, addUserToStory: async (req, res) => {
+        try {
+            const { storyId, userId } = req.body;
+    
+            // Find the story using the provided storyId and populate the users field with all user details
+            const story = await Story.findById(storyId)
+             
+            if (!story) {
+                return res.json({ message: "stroy not found"  });
+
+            }
+    
+            // Find the user using the provided userId
+            const user = await User.findById(userId)
+           
+    
+            if (!user) {
+                return res.json({ message: "User not found"  });
+            }
+    
+            // Check if the user is already in the story's users array
+            if (story.users.includes(userId)) {
+               return res.json({ message: "User is already in the story"  });
+            }
+    
+            // Add the user to the story's users array
+            story.users.push(user);
+            await story.save();
+      
+            res.json({ message: "User added to the story successfully", story });
+        } catch (error) {
+            console.error("Error adding user to story:", error);
+            res.status(500).json({ message: "An error occurred while adding user to story" });
+        }
     },
+    
 
 
 

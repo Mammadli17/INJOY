@@ -283,9 +283,9 @@ const Main = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View style={{ }}>
-     <View style={{flexDirection:"row",justifyContent:"space-between",top:5}}>
+     <View style={{flexDirection:"row",justifyContent:"space-between",top:8}}>
      <View style={{left:10}}>
-          <Text style={{fontSize:25}}>
+          <Text style={{fontSize:25,color:"gray"}}>
           INJOY
           </Text>
         </View>

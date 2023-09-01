@@ -156,100 +156,98 @@ app.post("/token", (req,res) => {
       res.status(500).send("Token EXPIRE!");
   }
 })
-// app.post('/api/story', async (req, res) => {
- 
-//   if (!req.files || !req.files.story) {
-//     res.status(400).send('No file uploaded.');
-//     return;
-//   }
 
-
-//   const extName = path.extname(req.files.story.name);
-//   const targetDir = path.join(__dirname, 'images');
-//   if (!fs.existsSync(targetDir)) {
-//     fs.mkdirSync(targetDir);
-//   }
-//   if (extName == ".jpeg" || extName == ".jpg" || extName == ".png") {
-
-//     const newFileName = uuidv4() + extName;
-//     req.files.story.mv(path.join(targetDir, newFileName), async (err) => {
-//       if (err) {
-//         console.error('Error saving image:', err);
-//         res.status(500).send('Server Error');
-//       } else {
-//         // If the image is uploaded successfully, save the image URI to the database instead of the local file path.
-//         const userId = req.body.userId; // Get the user ID from the request body (sent from the React app).
-//         const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
-
-//         try {
-//           const updatedUser = await User.findByIdAndUpdate(userId, { story: profilePictureURI }, { new: true });
-//           res.send('Ok');
-//         } catch (err) {
-//           console.error('Error updating user profile picture:', err);
-//           res.status(500).send('Server Error');
-//         }
-//       }
-//     });
-//   } else {
-//     res.status(500).send("Ext error");
-//   }
-// });
 app.post('/api/story', async (req, res) => {
   const { _id } = req.body;
   User.findById(_id)
-      .then(user => {
-        
-        
-          if (!user) {
-              return res.status(404).json({ message: "User not found" });
-          }
-      
-              // (req.files.postImg.name);
-          // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
-          if (req.files && req.files.image) {
-            
-             
-              const extName = path.extname(req.files.image.name);
-              const targetDir = path.join(__dirname, 'images');
-                    
-              if (!fs.existsSync(targetDir)) {
-                  fs.mkdirSync(targetDir);
-              }
-              
-              if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
-                  const newFileName = uuidv4() + extName;
-                  req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
-                      if (err) {
-                          console.error('Error saving image:', err);
-                          res.status(500).send('Server Error');
-                      } else {
-                          const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
-                          
-                          const story = new Story({
-                             
-                              user: _id,
-                              image: profilePictureURI 
-                          });
+    .then(async user => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
 
-                          // Gönderiyi veritabanına kaydedelim.
-                          story.save()
-                              .then(savedPost => {
-                                  res.json(savedPost);
-                              })
-                              .catch(err => {
-                                  res.status(500).json({ message: "Failed to save the post", error: err });
-                              });
-                      }
-                  });
-              } else {
-                  res.status(500).send("Ext error");
-              }
+      // Kontrol edilecek kullanıcının hikayesini bulalım
+      const existingStory = await Story.findOne({ user: _id });
+
+      // Eğer kullanıcının zaten bir hikayesi varsa güncelleyelim
+      if (existingStory) {
+        if (req.files && req.files.image) {
+          const extName = path.extname(req.files.image.name);
+          const targetDir = path.join(__dirname, 'images');
+
+          if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir);
           }
-      })
-      .catch(err => {
-          res.status(500).json({ message: "Mongo error!", error: err });
-      });
-})
+
+          if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
+            const newFileName = uuidv4() + extName;
+            req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
+              if (err) {
+                console.error('Error saving image:', err);
+                res.status(500).send('Server Error');
+              } else {
+                const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
+
+                // Kullanıcının mevcut hikayesini güncelleyelim
+                existingStory.image = profilePictureURI;
+                existingStory.users=[]
+                existingStory.save()
+                  .then(updatedStory => {
+                    res.json(updatedStory);
+                  })
+                  .catch(err => {
+                    res.status(500).json({ message: "Failed to update the story", error: err });
+                  });
+              }
+            });
+          } else {
+            res.status(500).send("Ext error");
+          }
+        }
+      } else {
+        // Kullanıcının henüz hikayesi yoksa yeni bir hikaye oluşturalım
+        if (req.files && req.files.image) {
+          const extName = path.extname(req.files.image.name);
+          const targetDir = path.join(__dirname, 'images');
+
+          if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir);
+          }
+
+          if (extName === ".jpeg" || extName === ".jpg" || extName === ".png") {
+            const newFileName = uuidv4() + extName;
+            req.files.image.mv(path.join(targetDir, newFileName), async (err) => {
+              if (err) {
+                console.error('Error saving image:', err);
+                res.status(500).send('Server Error');
+              } else {
+                const profilePictureURI = `${req.protocol}://${req.get('host')}/images/${newFileName}`;
+                
+                const newStory = new Story({
+                  user: _id,
+                  image: profilePictureURI 
+                });
+
+                // Yeni hikayeyi veritabanına kaydedelim
+                newStory.save()
+                  .then(savedStory => {
+                    res.json(savedStory);
+                  })
+                  .catch(err => {
+                    res.status(500).json({ message: "Failed to save the story", error: err });
+                  });
+              }
+            });
+          } else {
+            res.status(500).send("Ext error");
+          }
+        }
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Mongo error!", error: err });
+    });
+});
+
 
 
 app.get('/', (req, res) => {

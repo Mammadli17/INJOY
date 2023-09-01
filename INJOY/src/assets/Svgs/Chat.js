@@ -3,8 +3,8 @@ import Svg, { Path } from "react-native-svg"
 const Chat1 = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={26}
-    height={25}
+    width={36}
+    height={35}
     fill="none"
     {...props}
   >
