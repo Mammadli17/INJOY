@@ -283,13 +283,13 @@ const Main = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View style={{ }}>
-     <View style={{flexDirection:"row",justifyContent:"space-between",top:8}}>
+     <View style={{flexDirection:"row",justifyContent:"space-between",top:5}}>
      <View style={{left:10}}>
-          <Text style={{fontSize:25,color:"gray"}}>
+          <Text style={{fontSize:25,color:"white",fontWeight:"900"}}>
           INJOY
           </Text>
         </View>
-        <View style={{right:10}}>
+        <View style={{right:4,top:4}}>
         <TouchableOpacity onPress={()=>navigation.navigate("Chat")}>
         <Chat1/>
         </TouchableOpacity>

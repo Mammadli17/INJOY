@@ -320,7 +320,7 @@ const Story = ({ navigation }: any) => {
               style={[
                 { height: 70, width: 70, borderRadius: 100 },
                 yourstory && yourstory.length > 0
-                  ? BorderColor
+                  ? BorderColor && BorderColor.length > 0
                     ? null // Eğer 'BorderColor' true ise hiçbir şey eklemeyin
                     : { borderColor: '#0677E8', borderWidth: 2 } // 'BorderColor' false ise sınıra renk ve genişlik ekleyin
                   : null // 'yourstory' boşsa veya uzunluğu 0 ise hiçbir şey eklemeyin
@@ -407,9 +407,10 @@ const Story = ({ navigation }: any) => {
       <Modal visible={ModalVisible2} onRequestClose={() => setModalVisible2(false)}>
         <View style={styles.modalContainer}>
           {yourstory && yourstory.length > 0 ? (
-            <Image
+           
+             <Image
               source={{ uri: yourstory[0].image }}
-              style={{ width: screenWidth, height: screenHeight }}
+              style={{ width: screenWidth/1.2, height: screenHeight/1.2 ,borderRadius:20 }}
               resizeMode="cover"
             />
           ) : (
