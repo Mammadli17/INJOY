@@ -16,10 +16,12 @@ import ProfileUserScreen from './ProfileUserScreen';
 import ProfileScreenUser from './ProfileScreenUser';
 import Chat from './Chat';
 import Story from '../components/Story';
+import GPT from './GPT';
+import ChatByUser from './ChatByUser';
 
 const Stack = createStackNavigator();
 
-const StackNav = () => {
+const   StackNav = () => {
   return (
     <Stack.Navigator>
      <Stack.Screen name="CheckOnbording" component={CheckOnbording} options={{ headerShown: false }} />
@@ -37,6 +39,8 @@ const StackNav = () => {
       <Stack.Screen name="ProfileScreenUser" component={ProfileScreenUser} options={{ headerShown: false }} />
       <Stack.Screen name="Story" component={Story} options={{ headerShown: false }} />
       <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
+      <Stack.Screen name="GPT" component={GPT} options={{ headerShown: false }} />
+      <Stack.Screen name="ChatByUser" component={ChatByUser} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

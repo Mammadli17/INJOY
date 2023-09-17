@@ -75,7 +75,7 @@ const AddPost = () => {
       const formData = new FormData();
       formData.append('_id', user._id);
       formData.append('title', title);
-      axios.post('http://192.168.100.31:8080/api/s', formData, {
+      axios.post('http://192.168.1.88:8080/api/s', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -103,9 +103,9 @@ const AddPost = () => {
       });
       console.log("yes");
   
-      formData.append('_id', user._id);
+        
       formData.append('title', title);
-      axios.post('http://192.168.100.31:8080/api/s', formData, {
+      axios.post('http://192.168.1.88:8080/api/s', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

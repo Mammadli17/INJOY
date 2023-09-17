@@ -43,7 +43,7 @@ const Otp = ({navigation,route}: any) => {
     
     const code = otpValues.join('')
    
-    axios.post("http://192.168.100.31:8080/api/user/confirm", { email:email, code:code })
+    axios.post("http://192.168.1.88:8080/api/user/confirm", { email:email, code:code })
         .then(res => {
             (res.data?.token);
           

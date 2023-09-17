@@ -95,7 +95,7 @@ const Main = ({ navigation }: any) => {
         authId: item.user._id
       }
 
-      axios.post("http://192.168.100.31:8080/api/user/postLike", likeData)
+      axios.post("http://192.168.1.88:8080/api/user/postLike", likeData)
         .then(response => {
 
           dispatch(fetchLikes())

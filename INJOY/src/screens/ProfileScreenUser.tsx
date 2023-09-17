@@ -34,6 +34,7 @@ const ProfileScreenUser = ({ navigation,route }: any) => {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [Follower, setFollower] = useState<any>();
   const [Following, setFollowing] = useState<any>();
+
  
  useEffect(() => {
   const fetchUserData = async () => {
@@ -74,7 +75,7 @@ useEffect(() => {
   }
 }, [followerData, user]);
 const Follow = async () => {
-  const apiUrl = 'http://192.168.100.31:8080/api/user/follow';
+  const apiUrl = 'http://192.168.1.88:8080/api/user/follow';
   const userData: any = await AsyncStorage.getItem('user');
   
   try {
@@ -165,7 +166,7 @@ const Follow = async () => {
           </Text>
         </TouchableOpacity>
         }
-          <TouchableOpacity style={{width:80,height:40,borderRadius:15,alignItems:"center",justifyContent:"center",borderColor:"gray",borderWidth:0.5}}>
+          <TouchableOpacity onPress={()=>navigation.navigate("ChatByUser",{item})} style={{width:80,height:40,borderRadius:15,alignItems:"center",justifyContent:"center",borderColor:"gray",borderWidth:0.5}}>
             <Text style={{color:"white"}}>
                 Message
             </Text>

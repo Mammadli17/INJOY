@@ -22,6 +22,9 @@ userRoutes.get('/getAllComments', userController.getAllComments)
 userRoutes.get('/getAllFollowers', userController.getAllFollowers)
 userRoutes.get('/getAllUsers', userController.getAllUsers)
 userRoutes.get('/getAllStory', userController.getAllStory)
+userRoutes.post('/chatpost', userController.createChatMessage)
+userRoutes.get('/getAllMessages', userController.getAllMessages)
+
 
 
 

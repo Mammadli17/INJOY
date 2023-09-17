@@ -17,7 +17,7 @@ const initialState: PostState = {
 export const fetchUserPost = createAsyncThunk('post/fetchPost', async (payload: any) => {
     console.log(payload);
     
-  const response = await axios.post<any>("http://192.168.100.31:8080/api/user/getpostId", payload);
+  const response = await axios.post<any>("http://192.168.1.88:8080/api/user/getpostId", payload);
   console.log(response.data,"responses");
   
   return response.data;

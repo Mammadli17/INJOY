@@ -1,119 +1,110 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, FlatList,TouchableOpacity } from 'react-native';
-import Send from '../assets/Svgs/Send';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, Dimensions, ScrollView, Image } from 'react-native';
+import Backk from '../assets/Svgs/Backk';
+import Search from '../assets/Svgs/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../redux';
+import { fetchUsers } from '../redux/slices/User';
+import { FlatList } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Use } from 'react-native-svg';
 
-const ApiKey = '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';
-const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+const SearchScreen = ({ navigation }: any) => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
+  const data = useSelector((state: any) => state.AllUsers.data);
+  const [userr, setuserr] = useState<any>()
+  const [Users, setUsers] = useState<any>()
+  useEffect(() => {
+
+    const fetchUserData = async () => {
+      dispatch(fetchUsers())
+      const userData: any = await AsyncStorage.getItem('user');
+      const userr = await JSON.parse(userData);
+      setuserr(userr);
+      const dat = data?.filter((item: any) => item._id != userr._id)
+      setUsers(dat)
 
 
-const ChatScreen: React.FC = () => {
-  const [messages, setMessages] = useState<any[]>([]); // Initialize with an empty array
-  const [inputText, setInputText] = useState<string>('');
+    };
+
+    fetchUserData();
+  }, [])
 
 
-  const handleSendMessage = useCallback(async () => {
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ApiKey}`,
-        },
-        body: JSON.stringify({
-          prompt: inputText,
-          max_tokens: 50,
-        }),
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        const aiMessage = data.choices[0].text.trim();
-        setMessages([...messages, { text: inputText, aiText: aiMessage }]);
+  const renderUser = ({ item }: any) => {
+    return (
+      <ScrollView>
+        <TouchableOpacity onPress={()=>navigation.navigate("ChatByUser",{item})}>
+          <View style={{ gap: 20, flexDirection: "row", width: "100%", marginHorizontal: 0, padding: 14 }}>
 
-        setInputText('');
-      } else {
-        console.error('API Hatası:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Hata:', error);
-    }
-  }, [inputText, messages]);
-  console.log(messages, "item");
-  const renderChat = ({ item }: any) => (
-    <>
+            <Image
+              source={item.profilepicture ? { uri: item.profilepicture } : require('../assets/pictures/profile.jpg')}
+              style={{ height: 40, width: 40, borderRadius: 100 }}
+              resizeMode="cover"
+            />
+            <View>
+              <Text style={{ color: "white", fontSize: 17 }}>{item?.FullName}</Text>
+              <Text style={{ color: "gray", fontSize: 14 }}>
+                salam brat necesen ?
+              </Text>
+            </View>
+          </View>
 
-      <View>
-        <View style={{ justifyContent: "flex-end", flexDirection: "row", right: 20, marginBottom: 20 }}>
-          <Text style={{ backgroundColor: "#2F6C9F", padding: 10, borderRadius: 10, color: "white" }} >{item.text}</Text>
-        </View>
-        <View style={{ marginBottom: 20, marginHorizontal: 20, paddingRight: 50 }}>
-          <Text style={{ backgroundColor: "#292C35", padding: 10, borderRadius: 10, color: "white" }} >{item.aiText}</Text>
-        </View>
-      </View>
+          <View style={{ width: "100%", height: 1, backgroundColor: "gray" }}>
 
-    </>
-  )
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
+
+    )
+
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Chat with GPT</Text>
-      <FlatList
-        data={messages}
-        renderItem={renderChat}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <View style={[styles.textInputContainer, ]}>
-        <TextInput
-          placeholder="Send a message"
-          placeholderTextColor={'gray'}
-          style={{ width: "100%", height: 40, fontSize: 16 }}
-          onChangeText={(text) => setInputText(text)}
-          value={inputText}
-        />
-
-     
-        <View style={styles.sendContainer}>
-
-          <TouchableOpacity onPress={handleSendMessage}>
-            <Send />
-          </TouchableOpacity>
-        </View>
+    <View style={{ flex: 1, backgroundColor: "#131621" }}>
+      <View style={{ marginTop: 20, left: 10, flexDirection: "row", gap: 20, alignItems: "center", marginBottom: 30 }}>
+        <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+          <Backk />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 25, color: "white" }}>
+          Messages
+        </Text>
       </View>
+      <View style={{ top: 20 }} >
+        <TouchableOpacity onPress={() => navigation.navigate("GPT")}>
+          <View style={{}}>
+            <View style={{ gap: 20, flexDirection: "row", width: "100%", marginHorizontal: 0, padding: 10 }}>
+              <Image
+                source={
+                  require('../assets/pictures/GPTT.jpg')
+                }
+                style={{ width: 40, height: 40, borderRadius: 100 }}
+              />
+              <View>
+                <Text style={{ color: "white", fontSize: 17 }}>
+                  CHAT GPT
+                </Text>
+                <Text style={{ color: "gray", fontSize: 14 }}>
+                  Ask the question to AiChat
+                </Text>
+              </View>
+            </View>
+            <View style={{ width: "100%", height: 1, backgroundColor: "gray" }}>
 
+            </View>
+          </View>
+
+        </TouchableOpacity>
+        <FlatList
+          data={Users}
+          renderItem={renderUser}
+        />
+      </View>
     </View>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  textInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 8,
-    marginHorizontal: 10,
-},
-sendContainer: {
-    left:-30
-},
-  container: {
-    flex: 1,
-    backgroundColor: '#131621',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 16,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 8,
-  },
-});
-
-export default ChatScreen;
+export default SearchScreen;

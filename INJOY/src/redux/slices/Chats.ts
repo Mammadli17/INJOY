@@ -7,28 +7,28 @@ const initialState = {
   error: null,
 };
 
-export const fetchStory = createAsyncThunk('user/fetchStory', async () => {
-  const response = await axios.get('http://192.168.1.88:8080/api/user/getAllStory');
+export const fetchChats = createAsyncThunk('user/fetchChats', async () => {
+  const response = await axios.get('http://192.168.1.88:8080/api/user/getAllMessages');
   return response.data;
 });
 
 const userSlice = createSlice({
-  name: 'user',
+  name: 'Chats',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchStory.pending, (state) => {
+      .addCase(fetchChats.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchStory.fulfilled, (state, action) => {
+      .addCase(fetchChats.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.data = action.payload;
       })
-      .addCase(fetchStory.rejected, (state, action) => {
+      .addCase(fetchChats.rejected, (state, action) => {
         state.status = 'failed';
       });
   },
 });
 
-export const Story  =  userSlice.reducer;
+export const Chats  =  userSlice.reducer;

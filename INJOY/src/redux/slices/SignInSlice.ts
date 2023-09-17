@@ -14,7 +14,7 @@ const initialState: SignIn = {
 };
 
 export const postSign= createAsyncThunk('todos/postTodo', async (payload: any) => {
-  const response = await axios.post("http://192.168.100.31:8080/api/user/login", payload);
+  const response = await axios.post("http://192.168.1.88:8080/api/user/login", payload);
   (response.data);
   
   return response.data;

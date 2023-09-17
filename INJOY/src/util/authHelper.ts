@@ -7,7 +7,7 @@ export async function tokenCheck() : Promise<Boolean> {
     let token: any = await AsyncStorage.getItem("token");
     let userStatus = false;
     if (token) {
-        await axios.post("http://192.168.100.31:8080/token", { token: token })
+        await axios.post("http://192.168.1.88:8080/token", { token: token })
             .then(res => {
                 userStatus = true
             })

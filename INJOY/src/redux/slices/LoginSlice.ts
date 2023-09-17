@@ -17,7 +17,7 @@ export const postData= createAsyncThunk('todos/postTodo', async (payload: any) =
  ("oks");
  
   
-  const response = await axios.post("http://192.168.100.31:8080/api/user/register", payload);
+  const response = await axios.post("http://192.168.1.88:8080/api/user/register", payload);
 
   (response.data);
   

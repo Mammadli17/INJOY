@@ -89,7 +89,7 @@ const Main = ({ route }: any) => {
   };
   const deletePost = async () => {
       try {
-        axios.post("http://192.168.100.31:8080/api/user/deletePost", {_id : item._id})
+        axios.post("http://192.168.1.88:8080/api/user/deletePost", {_id : item._id})
         .then(response => {
           navigation.navigate('Profile')
         })
@@ -116,7 +116,7 @@ const Main = ({ route }: any) => {
         authId: item.user._id
       }
 
-      axios.post("http://192.168.100.31:8080/api/user/postLike", likeData)
+      axios.post("http://192.168.1.88:8080/api/user/postLike", likeData)
         .then(response => {
 
           dispatch(fetchLikes())

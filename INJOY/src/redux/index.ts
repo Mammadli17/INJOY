@@ -10,6 +10,7 @@ import { Comment } from "./slices/Comment";
 import { Follow } from "./slices/Follow";
 import { Users } from "./slices/User";
 import { Story } from "./slices/Story";
+import { Chats } from "./slices/Chats";
 
 
 export const store = configureStore({
@@ -24,7 +25,9 @@ export const store = configureStore({
     AllComment: Comment,
     AllFollows:Follow,
     AllUsers:Users,
-    AllStory:Story
+    AllStory:Story,
+    AllChats:Chats
+
 
   },
 });

@@ -12,8 +12,7 @@ const { Like } = require("../models/Like");
 const { Comment } = require("../models/Comment");
 const { Follow } = require("../models/Follow");
 const { Story } = require("../models/Story");
-const { log } = require("console");
-
+const { Chat } = require("../models/Chat");
 const userController = {
 
 
@@ -397,17 +396,13 @@ const userController = {
     }, addUserToStory: async (req, res) => {
         try {
             const { storyId, userId } = req.body;
-    
-            // Find the story using the provided storyId and populate the users field with all user details
             const story = await Story.findById(storyId)
              
             if (!story) {
                 return res.json({ message: "stroy not found"  });
 
             }
-    
-            // Find the user using the provided userId
-            const user = await User.findById(userId)
+             const user = await User.findById(userId)
            
     
             if (!user) {
@@ -429,7 +424,47 @@ const userController = {
             res.status(500).json({ message: "An error occurred while adding user to story" });
         }
     },
+    createChatMessage : async (req, res) => {
+        try {
+          const { sender, receiver, content } = req.body; // Req'den gelen verileri alın.
+      
+          // Verileri kullanarak yeni bir mesaj oluşturun.
+          const newMessage = {
+            sender,
+            receiver,
+            content,
+          };
+      
+          // Chat koleksiyonuna yeni mesajı ekleyin.
+          const chat = await Chat.findOneAndUpdate(
+            {},
+            {
+              $push: { messages: newMessage },
+            },
+            { upsert: true, new: true }
+          );
+      
+          // Başarılı bir yanıt gönderin.
+          res.status(201).json(chat);
+        } catch (error) {
+          // Hata durumunda uygun bir hata mesajıyla yanıt verin.
+          console.error(error);
+          res.status(500).json({ error: 'Bir hata oluştu' });
+        }
+    },
+    getAllMessages : async (req, res) => {
+        try {
+        
+            const chat = await Chat.findOne({}, 'messages');
     
+            const messages = chat.messages;
+            res.status(200).json(messages);
+        } catch (error) {
+
+          console.error(error);
+          res.status(500).json({ error: 'Bir hata oluştu' });
+        }
+      }
 
 
 
