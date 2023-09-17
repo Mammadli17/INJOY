@@ -37,19 +37,14 @@ app.get('/api/images', (req, res) => {
 });
 app.post('/api/s', async (req, res) => {
   const { _id, title } = req.body;
+  console.log(_id,"id");
   User.findById(_id)
       .then(user => {
-        
-        
           if (!user) {
-              return res.status(404).json({ message: "User not found" });
+              return res.json({ message: "User not found" });
           }
-      
-              // (req.files.postImg.name);
-          // Eğer gönderi resmi yüklendi ise req.files'dan alıp gönderi verisine ekleyelim.
           if (req.files && req.files.image) {
-            
-             
+        
               const extName = path.extname(req.files.image.name);
               const targetDir = path.join(__dirname, 'images');
                     

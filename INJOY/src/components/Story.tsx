@@ -154,6 +154,8 @@ const Story = ({ navigation }: any) => {
         }
       }
     );
+    console.log(newImage,"im");
+    
   };
   console.log(BorderColor);
 
@@ -270,7 +272,7 @@ const Story = ({ navigation }: any) => {
     );
   };
 
-  console.log(BorderColor);
+  console.log(newImage,"image");
   const handleImageUpload = async () => {
     if (!newImage || !newImage.assets || newImage.assets.length === 0) {
       return;
@@ -284,7 +286,8 @@ const Story = ({ navigation }: any) => {
       type: newImage.assets[0].type,
     });
     formData.append('_id', userr._id);
-
+   
+   
     await axios
       .post('https://injoybackend.onrender.com/api/story', formData, {
         headers: {

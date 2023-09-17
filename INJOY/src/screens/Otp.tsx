@@ -116,6 +116,7 @@ const Otp = ({navigation,route}: any) => {
                 width: 60,
               }}
               placeholder="0"
+              placeholderTextColor={"white"}
               keyboardType="numeric"
               maxLength={1}
               onChangeText={(value) => {

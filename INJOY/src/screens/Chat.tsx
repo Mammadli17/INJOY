@@ -49,7 +49,7 @@ const SearchScreen = ({ navigation }: any) => {
             <View>
               <Text style={{ color: "white", fontSize: 17 }}>{item?.FullName}</Text>
               <Text style={{ color: "gray", fontSize: 14 }}>
-                salam brat necesen ?
+               
               </Text>
             </View>
           </View>

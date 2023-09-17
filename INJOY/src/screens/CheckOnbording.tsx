@@ -8,6 +8,7 @@ const CheckOnbording = ({ navigation }: any) => {
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
+ 
 
   const checkOnboardingStatus = async () => {
     try {

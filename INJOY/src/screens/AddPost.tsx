@@ -69,8 +69,10 @@ const AddPost = () => {
   }
 
   const handleImageUpload = () => {
+    console.log(user._id,"id");
+    
     if (!image || image.length === 0) {
-      console.log("noi");
+      
       
       const formData = new FormData();
       formData.append('_id', user._id);
@@ -81,7 +83,7 @@ const AddPost = () => {
         },
       })
         .then(response => {
-          // İstek başarılı oldu ve sunucudan bir cevap döndü.
+  
           console.log('Başarılı cevap:', response.data);
           setShowModal(true);
           setTimeout(() => {
@@ -91,8 +93,7 @@ const AddPost = () => {
         })
         .catch(error => {
           // İstek başarısız oldu veya sunucu hata döndürdü.
-          console.error('Hata:', error);
-        });
+          console.error('Response data:', error.response?.data);        });
     }
     else{
       const formData = new FormData();
@@ -101,9 +102,9 @@ const AddPost = () => {
         name: image.fileName,
         type: image.type,
       });
-      console.log("yes");
-  
-        
+    
+      formData.append('_id', user._id);
+      
       formData.append('title', title);
       axios.post('https://injoybackend.onrender.com/api/s', formData, {
         headers: {

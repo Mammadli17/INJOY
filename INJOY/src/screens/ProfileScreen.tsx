@@ -133,7 +133,7 @@ const ProfileScreen = ({ navigation }: any) => {
     formData.append('userId', user._id);
 
     axios
-      .post('http://192.168.1.881:8080/api/upload', formData, {
+      .post('https://injoybackend.onrender.com/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -143,6 +143,7 @@ const ProfileScreen = ({ navigation }: any) => {
         dispatch(fetchUser({ _id: user._id }));
       })
       .catch((error) => {
+        console.log(error.response.data);
         
       })
       .finally(() => {

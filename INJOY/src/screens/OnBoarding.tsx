@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 20,
-    top:40
+    top:20
   },
   finishButtonText: {
     color: '#131621',
