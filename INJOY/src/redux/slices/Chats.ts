@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchChats = createAsyncThunk('user/fetchChats', async () => {
-  const response = await axios.get('http://192.168.1.88:8080/api/user/getAllMessages');
+  const response = await axios.get('https://injoybackend.onrender.com/api/user/getAllMessages');
   return response.data;
 });
 

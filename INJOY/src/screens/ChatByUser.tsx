@@ -38,7 +38,7 @@ const ChatByUser = ({ route }: any) => {
       "receiver": User._id,
       "content": message
     }
-    axios.post("http://192.168.1.88:8080/api/user/chatpost", a)
+    axios.post("https://injoybackend.onrender.com/api/user/chatpost", a)
       .then(response => {
         dispatch(fetchChats())
       })

@@ -152,7 +152,7 @@ const ProfileScreen = ({ navigation }: any) => {
     setModalVisible1(false);
   };
   const saveBio = () => {
-    const apiUrl = 'http://192.168.1.88:8080/api/user/bio';
+    const apiUrl = 'https://injoybackend.onrender.com/api/user/bio';
 
     axios
       .post(apiUrl, {

@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchLikes = createAsyncThunk('user/fetchLikes', async () => {
-  const response = await axios.get('http://192.168.1.88:8080/api/user/getAllLikes');
+  const response = await axios.get('https://injoybackend.onrender.com/api/user/getAllLikes');
   return response.data;
 });
 

@@ -167,7 +167,7 @@ const Story = ({ navigation }: any) => {
     };
 
     await axios
-      .post('http://192.168.1.88:8080/api/user/userAdd', a)
+      .post('https://injoybackend.onrender.com/api/user/userAdd', a)
       .then((response) => {
         console.log(response.data);
 
@@ -191,7 +191,7 @@ const Story = ({ navigation }: any) => {
     };
 
     await axios
-      .post('http://192.168.1.88:8080/api/user/userAdd', a)
+      .post('https://injoybackend.onrender.com/api/user/userAdd', a)
       .then((response) => {
         console.log(response.data);
 
@@ -286,7 +286,7 @@ const Story = ({ navigation }: any) => {
     formData.append('_id', userr._id);
 
     await axios
-      .post('http://192.168.1.88:8080/api/story', formData, {
+      .post('https://injoybackend.onrender.com/api/story', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

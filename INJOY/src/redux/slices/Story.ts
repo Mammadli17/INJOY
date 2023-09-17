@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchStory = createAsyncThunk('user/fetchStory', async () => {
-  const response = await axios.get('http://192.168.1.88:8080/api/user/getAllStory');
+  const response = await axios.get('https://injoybackend.onrender.com/api/user/getAllStory');
   return response.data;
 });
 
