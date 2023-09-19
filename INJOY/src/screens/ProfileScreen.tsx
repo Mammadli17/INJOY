@@ -133,7 +133,7 @@ const ProfileScreen = ({ navigation }: any) => {
     formData.append('userId', user._id);
 
     axios
-      .post('https://injoybackend.onrender.com/api/upload', formData, {
+      .post('http://172.16.0.38:8080/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -153,7 +153,7 @@ const ProfileScreen = ({ navigation }: any) => {
     setModalVisible1(false);
   };
   const saveBio = () => {
-    const apiUrl = 'https://injoybackend.onrender.com/api/user/bio';
+    const apiUrl = 'http://172.16.0.38:8080/api/user/bio';
 
     axios
       .post(apiUrl, {

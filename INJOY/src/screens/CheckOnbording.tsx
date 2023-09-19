@@ -8,8 +8,6 @@ const CheckOnbording = ({ navigation }: any) => {
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
- 
-
   const checkOnboardingStatus = async () => {
     try {
       const onboardingCompleted = await AsyncStorage.getItem('onboardingCompleted');

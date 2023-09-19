@@ -95,7 +95,7 @@ const Main = ({ navigation }: any) => {
         authId: item.user._id
       }
 
-      axios.post("https://injoybackend.onrender.com/api/user/postLike", likeData)
+      axios.post("http://172.16.0.38:8080/api/user/postLike", likeData)
         .then(response => {
 
           dispatch(fetchLikes())

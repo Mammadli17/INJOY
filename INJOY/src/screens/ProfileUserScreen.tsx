@@ -75,7 +75,7 @@ useEffect(() => {
   }
 }, [followerData, user]);
 const Follow = async () => {
-  const apiUrl = 'https://injoybackend.onrender.com/api/user/follow';
+  const apiUrl = 'http://172.16.0.38:8080/api/user/follow';
   const userData: any = await AsyncStorage.getItem('user');
   
   try {

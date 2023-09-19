@@ -169,7 +169,7 @@ const Story = ({ navigation }: any) => {
     };
 
     await axios
-      .post('https://injoybackend.onrender.com/api/user/userAdd', a)
+      .post('http://172.16.0.38:8080/api/user/userAdd', a)
       .then((response) => {
         console.log(response.data);
 
@@ -193,7 +193,7 @@ const Story = ({ navigation }: any) => {
     };
 
     await axios
-      .post('https://injoybackend.onrender.com/api/user/userAdd', a)
+      .post('http://172.16.0.38:8080/api/user/userAdd', a)
       .then((response) => {
         console.log(response.data);
 

@@ -7,7 +7,7 @@ export async function tokenCheck() : Promise<Boolean> {
     let token: any = await AsyncStorage.getItem("token");
     let userStatus = false;
     if (token) {
-        await axios.post("https://injoybackend.onrender.com/token", { token: token })
+        await axios.post("http://172.16.0.38:8080/token", { token: token })
             .then(res => {
                 userStatus = true
             })

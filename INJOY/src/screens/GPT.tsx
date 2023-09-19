@@ -3,9 +3,8 @@ import { StyleSheet, View, Text, TextInput, Button, FlatList,TouchableOpacity } 
 import Send from '../assets/Svgs/Send';
 const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
 const GPT: React.FC = () => {
-  const [messages, setMessages] = useState<any[]>([]); // Initialize with an empty array
+  const [messages, setMessages] = useState<any[]>([]); 
   const [inputText, setInputText] = useState<string>('');
-
 
   const handleSendMessage = useCallback(async () => {
     try {

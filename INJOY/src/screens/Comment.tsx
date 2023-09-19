@@ -44,7 +44,7 @@ const Comment = ({ route }: any) => {
                 message: message
             }
 
-            axios.post("https://injoybackend.onrender.com/api/user/postComment", likeData)
+            axios.post("http://172.16.0.38:8080/api/user/postComment", likeData)
                 .then(response => {
                     
                      dispatch(fetchComments())

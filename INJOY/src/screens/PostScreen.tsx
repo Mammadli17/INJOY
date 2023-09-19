@@ -89,7 +89,7 @@ const Main = ({ route }: any) => {
   };
   const deletePost = async () => {
       try {
-        axios.post("https://injoybackend.onrender.com/api/user/deletePost", {_id : item._id})
+        axios.post("http://172.16.0.38:8080/api/user/deletePost", {_id : item._id})
         .then(response => {
           navigation.navigate('Profile')
         })
@@ -116,7 +116,7 @@ const Main = ({ route }: any) => {
         authId: item.user._id
       }
 
-      axios.post("https://injoybackend.onrender.com/api/user/postLike", likeData)
+      axios.post("http://172.16.0.38:8080/api/user/postLike", likeData)
         .then(response => {
 
           dispatch(fetchLikes())

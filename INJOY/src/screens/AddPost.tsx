@@ -77,7 +77,7 @@ const AddPost = () => {
       const formData = new FormData();
       formData.append('_id', user._id);
       formData.append('title', title);
-      axios.post('https://injoybackend.onrender.com/api/s', formData, {
+      axios.post('http://172.16.0.38:8080/api/s', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -106,7 +106,7 @@ const AddPost = () => {
       formData.append('_id', user._id);
       
       formData.append('title', title);
-      axios.post('https://injoybackend.onrender.com/api/s', formData, {
+      axios.post('http://172.16.0.38:8080/api/s', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
