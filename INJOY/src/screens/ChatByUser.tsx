@@ -38,7 +38,7 @@ const ChatByUser = ({ route }: any) => {
       "receiver": User._id,
       "content": message
     }
-    axios.post("http://172.16.0.38:8080/api/user/chatpost", a)
+    axios.post("https://injoybackend.onrender.com/api/user/chatpost", a)
       .then(response => {
         dispatch(fetchChats())
       })
@@ -98,7 +98,7 @@ const ChatByUser = ({ route }: any) => {
               {User.FullName}
             </Text>
           </View>
-          <View style={{ backgroundColor: "#494C53", padding: 10, borderRadius: 100 ,right:0}}>
+          <View style={{ backgroundColor: "#494C53", padding: 10, borderRadius: 100 ,right:10}}>
             <Call />
           </View>
         </View>

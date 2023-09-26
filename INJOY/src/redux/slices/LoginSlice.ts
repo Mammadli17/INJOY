@@ -17,7 +17,7 @@ export const postData= createAsyncThunk('todos/postTodo', async (payload: any) =
  ("oks");
  
   
-  const response = await axios.post("http://172.16.0.38:8080/api/user/register", payload);
+  const response = await axios.post("https://injoybackend.onrender.com/api/user/register", payload);
 
   (response.data);
   

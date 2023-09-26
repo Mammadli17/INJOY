@@ -6,6 +6,7 @@ const GPT: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]); 
   const [inputText, setInputText] = useState<string>('');
 
+
   const handleSendMessage = useCallback(async () => {
     try {
       const response = await fetch(apiUrl, {

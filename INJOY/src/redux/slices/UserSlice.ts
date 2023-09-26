@@ -15,7 +15,7 @@ const initialState: UserState = {
 };
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (payload: any) => {
-  const response = await axios.post<any>("http://172.16.0.38:8080/api/user/getuser", payload);
+  const response = await axios.post<any>("https://injoybackend.onrender.com/api/user/getuser", payload);
   
   return response.data;
 
